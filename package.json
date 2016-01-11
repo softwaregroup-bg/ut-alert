@@ -1,0 +1,25 @@
+{
+  "name": "ut-alert",
+  "version": "5.3.0",
+  "description": "",
+  "main": "index.js",
+  "peerDependencies": {
+    "ut-port-sql": "~5.3.16"
+  },
+  "devDependencies": {
+    "ut-tools": "~1.0.4"
+  },
+  "scripts": {
+    "lint": "ut-lint .",
+    "test": "npm run lint"
+  },
+  "publishConfig": {
+    "registry": "http://npm.softwaregroup-bg.com:5001"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.softwaregroup-bg.com:ut5/ut-alert.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
