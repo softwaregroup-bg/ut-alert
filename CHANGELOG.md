@@ -1,3 +1,9 @@
+<a name="5.3.4"></a>
+## [5.3.4](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.3...v5.3.4) (2016-03-31)
+
+
+
+
 <a name="5.3.3"></a>
 ## [5.3.3](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.2...v5.3.3) (2016-03-31)
 
