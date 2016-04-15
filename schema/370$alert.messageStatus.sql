@@ -1,5 +1,5 @@
 CREATE TABLE [alert].[messageStatus] (
-    [id] int IDENTITY(1,1) not null,
+    [id] bigint IDENTITY(1,1) not null,
     [messageId] int not null,
     [statusId] int not null,
     [updatedOn] datetimeoffset not null,
