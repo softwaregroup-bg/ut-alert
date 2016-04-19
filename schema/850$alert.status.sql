@@ -2,6 +2,8 @@ IF NOT EXISTS (SELECT 1 FROM [alert].[status] WHERE [name] = N'REQUESTED')
     INSERT INTO [alert].[status] ([name]) VALUES (N'REQUESTED');
 IF NOT EXISTS (SELECT 1 FROM [alert].[status] WHERE [name] = N'QUEUED')
     INSERT INTO [alert].[status] ([name]) VALUES (N'QUEUED');
+IF NOT EXISTS (SELECT 1 FROM [alert].[status] WHERE [name] = N'PROCESSING')
+    INSERT INTO [alert].[status] ([name]) VALUES (N'PROCESSING');
 IF NOT EXISTS (SELECT 1 FROM [alert].[status] WHERE [name] = N'DELIVERED')
     INSERT INTO [alert].[status] ([name]) VALUES (N'DELIVERED');
 IF NOT EXISTS (SELECT 1 FROM [alert].[status] WHERE [name] = N'FAILED')

@@ -1,4 +1,4 @@
-CREATE PROCEDURE [alert].[message.pop]
+CREATE PROCEDURE [alert].[queue.fetch]
     @port nvarchar(255)
 AS
 BEGIN
@@ -9,7 +9,6 @@ BEGIN
 
         SELECT @statusRequested = id FROM [alert].[status] WHERE [name] = 'REQUESTED';
         SELECT @statusQueued = id FROM [alert].[status] WHERE [name] = 'QUEUED';
-        SELECT @statusFailed = id FROM [alert].[status] WHERE [name] = 'FAILED';
 
         DECLARE @messageId int;
 
@@ -21,20 +20,17 @@ BEGIN
         		(m.[statusId] = @statusQueued)
         		OR
         		(m.[statusId] = @statusRequested AND m.[executeOn] < CURRENT_TIMESTAMP)
-        		OR
-        		(m.[statusId] = @statusFailed AND m.[retryOn] < CURRENT_TIMESTAMP)
         	)
         ORDER BY
         	m.[priority] DESC,
         	CASE m.[statusId]
         		WHEN @statusRequested THEN m.[executeOn]
         		WHEN @statusQueued THEN m.[createdOn]
-        		WHEN @statusFailed THEN m.[retryOn]
         	END ASC;
 
 		EXEC [alert].[message.setStatus]
 			@messageId = @messageId,
-			@status = 'QUEUED';
+			@status = 'PROCESSING';
 		
 		IF @@TRANCOUNT > 0
 			COMMIT TRANSACTION;
