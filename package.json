@@ -24,7 +24,9 @@
     "pretest": "ut-pretest",
     "preversion": "ut-preversion",
     "release": "ut-release",
-    "version": "ut-version"
+    "version": "ut-version",
+    "jenkins": "ut-jenkins",
+    "gitlab": "ut-gitlab"
   },
   "publishConfig": {
     "registry": "https://nexus.softwaregroup-bg.com/repository/npm-internal"
