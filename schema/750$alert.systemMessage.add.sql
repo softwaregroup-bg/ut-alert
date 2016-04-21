@@ -1,14 +1,23 @@
-CREATE PROCEDURE [alert].[message.add]
+CREATE PROCEDURE [alert].[systemMessage.add]
 	@port nvarchar(255),
 	@address nvarchar(255),
+	@subject nvarchar(1024),
 	@content nvarchar(max),
-	@executeOn datetimeoffset,
 	@priority int = 0,
 	@meta [core].[metaDataTT] READONLY
 AS
 BEGIN
 	BEGIN TRY
-		BEGIN TRANSACTION;
+
+	    SELECT 1 AS [id];
+	    RETURN;
+
+        DECLARE @TranCounter INT;
+        SET @TranCounter = @@TRANCOUNT;
+        IF @TranCounter > 0
+            SAVE TRANSACTION alert_systemMessage_add;
+        ELSE
+            BEGIN TRANSACTION;
 
 		IF (@port IS NULL OR LEN(@port) = 0)
 			RAISERROR(N'Missing delivery port', 16, 1);
@@ -20,13 +29,7 @@ BEGIN
 		DECLARE @actorId bigint;
 		DECLARE @statusName nvarchar(255);
 
-		IF (@executeOn IS NULL OR @executeOn <= CURRENT_TIMESTAMP)
-		BEGIN
-			SET @executeOn = NULL;
-		    SET @statusName = 'QUEUED';
-		END
-		ELSE
-		    SET @statusName = 'REQUESTED';
+		SET @statusName = 'QUEUED';
 
 		SELECT @statusId = id FROM [alert].[status] WHERE [name] = @statusName;
 
@@ -37,12 +40,7 @@ BEGIN
 		IF @actorId IS NULL
 			RAISERROR(N'Authentication required', 16, 1);
 
-		INSERT INTO [alert].[message]
-			([port], [address], [content], [createdBy], [createdOn], [executeOn], [statusId], [priority])
-		OUTPUT
-		    INSERTED.*
-		VALUES
-			(@port, LTRIM(RTRIM(@address)), @content, @actorId, CURRENT_TIMESTAMP, @executeOn, @statusId, @priority);
+        -- TODO: Put table storage SQL here.
 
 		IF @@TRANCOUNT > 0
 			COMMIT TRANSACTION;
@@ -51,10 +49,11 @@ BEGIN
 		DECLARE
             @errorMessage NVARCHAR(4000) = ERROR_MESSAGE(),
             @errorSeverity INT = ERROR_SEVERITY(),
-            @errorState INT = ERROR_STATE()
-        RAISERROR(@errorMessage, @errorSeverity, @errorState);
-		IF @@TRANCOUNT > 0
-			ROLLBACK TRANSACTION;
+            @errorState INT = ERROR_STATE();
+        IF @TranCounter = 0
+            ROLLBACK TRANSACTION;
+        ELSE IF @@TRANCOUNT > 0 and XACT_STATE() <> -1
+            ROLLBACK TRANSACTION alert_systemMessage_add;
         RAISERROR('%s', @errorSeverity, @errorState, @errorMessage);
 	END CATCH
 END

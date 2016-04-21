@@ -1,4 +1,4 @@
-CREATE PROCEDURE [alert].[queue.fetch]
+CREATE PROCEDURE [alert].[queue.pop]
     @port nvarchar(255)
 AS
 BEGIN
@@ -12,25 +12,9 @@ BEGIN
 
         DECLARE @messageId int;
 
-        SELECT TOP 1 @messageId = [id]
-        FROM [alert].[message] m
-        WHERE
-        	m.[port] = @port
-        	AND (
-        		(m.[statusId] = @statusQueued)
-        		OR
-        		(m.[statusId] = @statusRequested AND m.[executeOn] < CURRENT_TIMESTAMP)
-        	)
-        ORDER BY
-        	m.[priority] DESC,
-        	CASE m.[statusId]
-        		WHEN @statusRequested THEN m.[executeOn]
-        		WHEN @statusQueued THEN m.[createdOn]
-        	END ASC;
+        -- TODO: Request @count messages with status "QUEUED" for the @port.
 
-		EXEC [alert].[message.setStatus]
-			@messageId = @messageId,
-			@status = 'PROCESSING';
+		-- TODO: Change status of the returned messages to "PROCESSING"
 		
 		IF @@TRANCOUNT > 0
 			COMMIT TRANSACTION;
