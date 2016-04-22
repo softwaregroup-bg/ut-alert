@@ -1,48 +1,23 @@
-CREATE PROCEDURE [alert].[queue.fetch]
-    @port nvarchar(255)
+ALTER PROCEDURE [alert].[queue.pop] -- returns the specified count of messages ordered by the priority from the biggest to the lowest
+    @port nvarchar(255), -- the port
+    @count int -- the number of the messages that should be returned
 AS
-BEGIN
-	BEGIN TRY
-		BEGIN TRANSACTION;
+BEGIN TRY
+    DECLARE @statusRequested int = (Select id FROM [alert].[status] WHERE [name] = 'REQUESTED')
+    DECLARE @statusProcessing int = (Select id FROM [alert].[status] WHERE [name] = 'PROCESSING')
 
-        DECLARE @statusRequested int, @statusQueued int, @statusFailed int;
-
-        SELECT @statusRequested = id FROM [alert].[status] WHERE [name] = 'REQUESTED';
-        SELECT @statusQueued = id FROM [alert].[status] WHERE [name] = 'QUEUED';
-
-        DECLARE @messageId int;
-
-        SELECT TOP 1 @messageId = [id]
-        FROM [alert].[message] m
-        WHERE
-        	m.[port] = @port
-        	AND (
-        		(m.[statusId] = @statusQueued)
-        		OR
-        		(m.[statusId] = @statusRequested AND m.[executeOn] < CURRENT_TIMESTAMP)
-        	)
-        ORDER BY
-        	m.[priority] DESC,
-        	CASE m.[statusId]
-        		WHEN @statusRequested THEN m.[executeOn]
-        		WHEN @statusQueued THEN m.[createdOn]
-        	END ASC;
-
-		EXEC [alert].[message.setStatus]
-			@messageId = @messageId,
-			@status = 'PROCESSING';
-		
-		IF @@TRANCOUNT > 0
-			COMMIT TRANSACTION;
-	END TRY
-	BEGIN CATCH
-		DECLARE
-            @errorMessage NVARCHAR(4000) = ERROR_MESSAGE(),
-            @errorSeverity INT = ERROR_SEVERITY(),
-            @errorState INT = ERROR_STATE()
-        RAISERROR(@errorMessage, @errorSeverity, @errorState);
-		IF @@TRANCOUNT > 0
-			ROLLBACK TRANSACTION;
-        RAISERROR('%s', @errorSeverity, @errorState, @errorMessage);
-	END CATCH
-END
+    update m
+    set [statusId] =  @statusProcessing
+    OUTPUT INSERTED.id
+    from 
+    (
+        SELECT TOP (@count) [id]
+        FROM [alert].[messageQueue] m
+        WHERE m.[port] = @port AND m.[statusId] = @statusRequested
+        ORDER BY m.[priority] DESC
+    ) s
+    join [alert].[messageQueue] m on s.Id = m.id
+END TRY
+BEGIN CATCH
+	exec core.error
+END CATCH
