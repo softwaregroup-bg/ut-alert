@@ -3,7 +3,6 @@ CREATE TABLE [alert].[messageQueue] ( -- table that stores all the messages that
     [port] varchar(255) not null, -- implementation dependant
     [channel] varchar(100) not null, -- channel is by what the message should be sent, for example "email", "sms"
     [recipient] nvarchar(255) not null, -- the number or the email address that is receiving the message
-    [subject] nvarchar(1024), -- if the message is an email this is the subject 
     [content] nvarchar(max) not null,  -- the message content
     [createdBy] bigint not null, -- the user that created the message
     [createdOn] datetimeoffset not null, -- when the message is created    

@@ -24,14 +24,8 @@ module.exports = {
     receive: function(msg, $meta) {
         var self = this;
         return when.map(msg.messages, function(message) {
-            var portOptions = self.bus.config.alert.ports[message.port];
-            if (!portOptions.channel) {
-                let err = ConfigurationError('alert.configuration.missing.key');
-                err.path = ['alert', 'ports', {type: 'key', any: true}, 'channel'];
-                throw err;
-            }
             try {
-                var channelHook = require(path.join(__dirname, '..', 'channel', portOptions.channel));
+                var channelHook = require(path.join(__dirname, '..', 'channel', message.channel));
             } catch (e) {
                 if (e.code !== 'MODULE_NOT_FOUND') {
                     throw e;

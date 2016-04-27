@@ -52,7 +52,7 @@ module.exports = {
             return msg;
         }
         if (typeof channelHook.receive === 'function') {
-            return channelHook.receive.call(this, msg, $meta);
+            return channelHook.receive.call(this, msg.inserted, $meta);
         }
         return msg;
     }

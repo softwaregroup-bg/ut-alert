@@ -10,7 +10,7 @@ BEGIN TRY
 
     UPDATE m
     SET [statusId] =  @statusProcessing
-    OUTPUT INSERTED.id, inserted.port, inserted.recipient, inserted.subject, inserted.content
+    OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, INSERTED.content
     FROM
     (
         SELECT TOP (@count) [id]
