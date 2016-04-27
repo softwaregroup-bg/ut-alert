@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var ConfigurationError = require('ut-error').define('ConfigurationError');
 var RequestFieldError = require('ut-error').define('alert.RequestFieldError');
 
@@ -26,6 +27,33 @@ module.exports = {
         }
 
         msg.channel = portOptions.channel;
+
+        try {
+            var channelHook = require(path.join(__dirname, '..', 'channel', msg.channel));
+        } catch (e) {
+            if (e.code !== 'MODULE_NOT_FOUND') {
+                throw e;
+            }
+            return msg;
+        }
+        if (typeof channelHook.send === 'function') {
+            return channelHook.send.call(this, msg, $meta);
+        }
+
+        return msg;
+    },
+    receive: function(msg, $meta) {
+        try {
+            var channelHook = require(path.join(__dirname, '..', 'channel', msg.inserted.channel));
+        } catch (e) {
+            if (e.code !== 'MODULE_NOT_FOUND') {
+                throw e;
+            }
+            return msg;
+        }
+        if (typeof channelHook.receive === 'function') {
+            return channelHook.receive.call(this, msg, $meta);
+        }
         return msg;
     }
 };

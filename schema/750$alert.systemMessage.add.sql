@@ -22,9 +22,11 @@ BEGIN
         if @channel = 'email' and @subject is null
             RAISERROR(N'alert.systemMessage.add.missingEmailSubject', 16, 1);
 
+        SELECT 'inserted' resultSetName, 1 single;
+
 		INSERT INTO [alert].[messageQueue](port, channel, recipient, subject, content, createdBy, createdOn, statusId, priority)
 		OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, INSERTED.subject, INSERTED.content, INSERTED.createdBy, INSERTED.createdOn, 
-                INSERTED.statusId, @statusName as statusName, INSERTED.priority
+                @statusName as status, INSERTED.priority
 		VALUES (@port, @channel, LTRIM(RTRIM(@recipient)), @subject, @content, @actorId, SYSDATETIMEOFFSET(), @statusId, @priority)
 	END TRY
 	BEGIN CATCH
