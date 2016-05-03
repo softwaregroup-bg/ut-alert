@@ -9,6 +9,10 @@
   "devDependencies": {
     "ut-tools": "^5.3.13"
   },
+  "dependencies": {
+    "ut-error": "^5.3.11",
+    "when": "^3.7.7"
+  },
   "scripts": {
     "lint": "ut-lint .",
     "test": "ut-test",

@@ -11,9 +11,6 @@ BEGIN
 		DECLARE @statusName nvarchar(255) = 'QUEUED'
         DECLARE @statusId int = (select id from [alert].[status] where name = @statusName)
 		DECLARE @actorId bigint = (select actorId from @meta)
-
-		--IF @priority IS NULL
-		--    SET @priority = 0;
 		
 		IF @actorId IS NULL
 			RAISERROR(N'alert.systemMessage.add.missingCreatorId', 16, 1);
