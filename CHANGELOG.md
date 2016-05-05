@@ -1,3 +1,26 @@
+<a name="5.3.13"></a>
+## [5.3.13](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.12...v5.3.13) (2016-05-05)
+
+
+### Bug Fixes
+
+* change the status of the messages([4779f9e](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/4779f9e))
+* recover deleted SP([184bf78](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/184bf78))
+* **api:** Rename systemMessage.add to queue.push, because it is a better name for method directly pushing message to the queue.([5fbaaaa](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/5fbaaaa))
+* **email:** Remove subject as a column from database and API, as it is send as a part of the email content.([eb4cc27](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/eb4cc27))
+* **lint:** Fix some error in linting package.json (missing dependencies). Remove commented out SQL code.([c145085](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/c145085))
+* **resultsets+email:** Make named resultsets and implement pre- and post-processing on request/response for email to store the subject/html/text into the content using JSON.([757119b](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/757119b))
+
+
+### Features
+
+* add new message and queue pop messages by port and priority([0144443](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/0144443))
+* return more results for the messages([9a1619e](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/9a1619e))
+* **message:** Add notification that must be called by the port to notify successful or failed transfer([e30fbb3](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/e30fbb3))
+* **message:** Finish the message queue with ability to add system messages and request message from queue for a port.([8b6746e](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/8b6746e))
+
+
+
 <a name="5.3.12"></a>
 ## [5.3.12](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.11...v5.3.12) (2016-04-15)
 
