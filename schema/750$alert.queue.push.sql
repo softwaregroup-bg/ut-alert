@@ -1,4 +1,4 @@
-ALTER PROCEDURE [alert].[systemMessage.add]
+ALTER PROCEDURE [alert].[queue.push]
 	@port varchar(255),
     @channel varchar(128),
 	@recipient nvarchar(255),
