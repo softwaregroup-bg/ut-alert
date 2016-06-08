@@ -1,3 +1,13 @@
+<a name="5.3.15"></a>
+## [5.3.15](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.14...v5.3.15) (2016-06-08)
+
+
+### Bug Fixes
+
+* update dependencies ([5bea932](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/5bea932))
+
+
+
 <a name="5.3.14"></a>
 ## [5.3.14](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.13...v5.3.14) (2016-05-10)
 
