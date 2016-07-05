@@ -1,6 +1,7 @@
 'use strict';
 
 var path = require('path');
+var when = require('when');
 var ConfigurationError = require('ut-error').define('ConfigurationError');
 var RequestFieldError = require('ut-error').define('alert.RequestFieldError');
 
@@ -43,17 +44,22 @@ module.exports = {
         return msg;
     },
     receive: function(msg, $meta) {
-        try {
-            var channelHook = require(path.join(__dirname, '..', 'channel', msg.inserted.channel));
-        } catch (e) {
-            if (e.code !== 'MODULE_NOT_FOUND') {
-                throw e;
+        return when.map(msg.inserted, function(inserted) {
+            try {
+                var channelHook = require(path.join(__dirname, '..', 'channel', inserted.channel));
+            } catch (e) {
+                if (e.code !== 'MODULE_NOT_FOUND') {
+                    throw e;
+                }
+                return inserted;
             }
+            if (typeof channelHook.receive === 'function') {
+                return channelHook.receive.call(this, inserted, $meta);
+            }
+            return inserted;
+        }).then(function(inserted) {
+            msg.inserted = inserted;
             return msg;
-        }
-        if (typeof channelHook.receive === 'function') {
-            return channelHook.receive.call(this, msg.inserted, $meta);
-        }
-        return msg;
+        });
     }
 };

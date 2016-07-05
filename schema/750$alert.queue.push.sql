@@ -1,7 +1,7 @@
 ALTER PROCEDURE [alert].[queue.push]
 	@port varchar(255),
     @channel varchar(128),
-	@recipient nvarchar(255),
+	@recipient [core].[arrayList] READONLY,
 	@content nvarchar(max),
 	@priority int = 0,
 	@meta [core].[metaDataTT] READONLY
@@ -15,12 +15,13 @@ BEGIN
 		IF @actorId IS NULL
 			RAISERROR(N'alert.systemMessage.add.missingCreatorId', 16, 1);
 
-        SELECT 'inserted' resultSetName, 1 single;
+        SELECT 'inserted' resultSetName;
 
 		INSERT INTO [alert].[messageQueue](port, channel, recipient, content, createdBy, createdOn, statusId, priority)
 		OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, INSERTED.content, INSERTED.createdBy, INSERTED.createdOn,
                 @statusName as status, INSERTED.priority
-		VALUES (@port, @channel, LTRIM(RTRIM(@recipient)), @content, @actorId, SYSDATETIMEOFFSET(), @statusId, @priority)
+        SELECT @port, @channel, LTRIM(RTRIM([value])), @content, @actorId, SYSDATETIMEOFFSET(), @statusId, @priority
+        FROM @recipient
 	END TRY
 	BEGIN CATCH
 		 EXEC [core].[error]
