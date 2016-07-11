@@ -1,16 +1,16 @@
 {
   "name": "ut-alert",
-  "version": "5.3.17",
+  "version": "5.4.0",
   "description": "",
   "main": "index.js",
   "peerDependencies": {
-    "ut-port-sql": "~5.3.16"
+    "ut-port-sql": "~5.4.1"
   },
   "devDependencies": {
-    "ut-tools": "^5.3.13"
+    "ut-tools": "^5.4.1"
   },
   "dependencies": {
-    "ut-error": "^5.3.11",
+    "ut-error": "^5.3.12",
     "when": "3.7.7"
   },
   "scripts": {
