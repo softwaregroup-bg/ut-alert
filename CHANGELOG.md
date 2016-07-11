@@ -1,3 +1,13 @@
+<a name="5.4.1"></a>
+## [5.4.1](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.17...v5.4.1) (2016-07-11)
+
+
+### Features
+
+* upgrade dependencies ([513f679](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/513f679))
+
+
+
 <a name="5.3.17"></a>
 ## [5.3.17](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.16...v5.3.17) (2016-07-06)
 
