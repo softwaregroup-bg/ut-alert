@@ -13,7 +13,7 @@ BEGIN
 		DECLARE @actorId bigint = (select [auth.actorId] from @meta)
 
 		IF @actorId IS NULL
-			RAISERROR(N'alert.systemMessage.add.missingCreatorId', 16, 1);
+			RAISERROR(N'alert.queue.push.missingCreatorId', 16, 1);
 
         SELECT 'inserted' resultSetName;
 
