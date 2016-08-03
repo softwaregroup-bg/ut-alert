@@ -1,7 +1,5 @@
 'use strict';
 
-var path = require('path');
-var when = require('when');
 var findChannel = require('../helpers/findChannel');
 var emailSerialize = require('../helpers/email/serialize');
 var emailUnserialize = require('../helpers/email/unserialize');
