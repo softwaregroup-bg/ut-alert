@@ -24,5 +24,5 @@ BEGIN TRY
     WHERE m.[id] = @messageId;
 END TRY
 BEGIN CATCH
-	EXEC core.error
+    EXEC core.error
 END CATCH

@@ -21,5 +21,5 @@ BEGIN TRY
     JOIN [alert].[messageQueue] m on s.Id = m.id
 END TRY
 BEGIN CATCH
-	EXEC core.error
+    EXEC core.error
 END CATCH
