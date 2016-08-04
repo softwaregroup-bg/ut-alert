@@ -20,5 +20,5 @@ BEGIN TRY
     JOIN [core].[language] l ON it.languageId = l.languageId AND l.iso2Code = @languageCode;
 END TRY
 BEGIN CATCH
-	exec core.error
+    EXEC core.error
 END CATCH
