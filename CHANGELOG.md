@@ -1,3 +1,14 @@
+<a name="5.5.1"></a>
+## [5.5.1](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.5.0...v5.5.1) (2016-08-04)
+
+
+### Bug Fixes
+
+* **sql:** Document the SQL tables and procedures. ([cb50712](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/cb50712))
+* **sql:** Replace TAB indent with 4 spaces indent. ([5e25f35](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/5e25f35))
+
+
+
 <a name="5.5.0"></a>
 # [5.5.0](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.4.1...v5.5.0) (2016-08-04)
 
