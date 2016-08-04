@@ -26,18 +26,38 @@ module.exports = {
             name: msg.template,
             languageCode: languageCode
         }).then(function(response) {
-            if (response.templates.length <= 0) {
-                throw errors['alert.template.notFound']({
-                    helperMessage: 'No template found in database', matching: {
-                        channel: channel,
-                        name: msg.template,
-                        languageCode: languageCode
+            if (Array.isArray(response.templates) && response.templates.length > 0) {
+                return response.templates;
+            }
+            if (bus.config.defaultLanguage && languageCode !== bus.config.defaultLanguage) {
+                return bus.importMethod('alert.template.fetch')({
+                    channel: channel,
+                    name: msg.template,
+                    languageCode: bus.config.defaultLanguage
+                }).then(function(response) {
+                    if (Array.isArray(response.templates) && response.templates.length > 0) {
+                        return response.templates;
                     }
+                    throw errors['alert.template.notFound']({
+                        helperMessage: 'No template found in database', matching: {
+                            channel: channel,
+                            name: msg.template,
+                            languageCode: languageCode
+                        }
+                    });
                 });
             }
+            throw errors['alert.template.notFound']({
+                helperMessage: 'No template found in database', matching: {
+                    channel: channel,
+                    name: msg.template,
+                    languageCode: languageCode
+                }
+            });
+        }).then(function(templates) {
             var templateMap = {};
             var content;
-            response.templates.forEach(function(template) {
+            templates.forEach(function(template) {
                 templateMap[template.type] = template;
             });
             // TODO: Find a better way to generate a content without iteration by channels.
