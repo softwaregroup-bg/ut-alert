@@ -1,3 +1,20 @@
+<a name="5.5.0"></a>
+# [5.5.0](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.4.1...v5.5.0) (2016-08-04)
+
+
+### Bug Fixes
+
+* **hooks:** Move serialization and channel search out of hooks. Remove dynamic require. ([d6f7fc1](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/d6f7fc1))
+* **lint:** Remove unused variables ([ad9a431](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/ad9a431))
+* **message-send:** When template for specified language is not found, search for template in default system language before give up. ([a67698b](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/a67698b))
+
+
+### Features
+
+* **template:** Create a method to allow use of templates ([0502dd4](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/0502dd4))
+
+
+
 <a name="5.4.1"></a>
 ## [5.4.1](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.17...v5.4.1) (2016-07-11)
 
