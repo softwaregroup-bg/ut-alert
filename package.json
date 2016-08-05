@@ -10,7 +10,7 @@
     "ut-tools": "^5.4.1"
   },
   "dependencies": {
-    "lodash.template": "^4.3.0",
+    "lodash.template": "4.3.0",
     "ut-error": "^5.3.12",
     "when": "3.7.7"
   },
