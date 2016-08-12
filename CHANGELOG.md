@@ -1,3 +1,13 @@
+<a name="5.5.3"></a>
+## [5.5.3](https://github.com/softwaregroup-bg/ut-alert/compare/v5.5.2...v5.5.3) (2016-08-12)
+
+
+### Bug Fixes
+
+* publish to npm ([5c32dff](https://github.com/softwaregroup-bg/ut-alert/commit/5c32dff))
+
+
+
 <a name="5.5.2"></a>
 ## [5.5.2](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.5.1...v5.5.2) (2016-08-05)
 
