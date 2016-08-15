@@ -12,13 +12,8 @@ BEGIN
         DECLARE @statusId int = (select id from [alert].[status] where name = @statusName)
         DECLARE @actorId bigint = (select [auth.actorId] from @meta)
 
-<<<<<<< HEAD
 		IF @actorId IS NULL
 			RAISERROR(N'alert.queue.push.missingCreatorId', 16, 1);
-=======
-        IF @actorId IS NULL
-            RAISERROR(N'alert.systemMessage.add.missingCreatorId', 16, 1);
->>>>>>> 653d4974ca34786873522574d9a7230a79d2dd2b
 
         SELECT 'inserted' resultSetName;
 
