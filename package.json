@@ -1,15 +1,16 @@
 {
   "name": "ut-alert",
-  "version": "5.4.1",
+  "version": "5.5.3",
   "description": "",
   "main": "index.js",
   "peerDependencies": {
     "ut-port-sql": "~5.4.1"
   },
   "devDependencies": {
-    "ut-tools": "^5.4.1"
+    "ut-tools": "^5.6.0"
   },
   "dependencies": {
+    "lodash.template": "4.3.0",
     "ut-error": "^5.3.12",
     "when": "3.7.7"
   },
@@ -32,13 +33,10 @@
     "jenkins": "ut-jenkins",
     "gitlab": "ut-gitlab"
   },
-  "publishConfig": {
-    "registry": "https://nexus.softwaregroup-bg.com/repository/npm-internal"
-  },
   "repository": {
     "type": "git",
-    "url": "git@git.softwaregroup-bg.com:ut5/ut-alert.git"
+    "url": "git@github.com:softwaregroup-bg/ut-alert.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "Apache-2.0"
 }

@@ -55,11 +55,19 @@ module.exports = [
     {
         name: 'alert.queue.push.missingCreatorId',
         defaultMessage: 'Missing credentials'
+    },
+    {
+        name: 'alert.template',
+        defaultMessage: 'ut-alert template error'
+    },
+    {
+        name: 'alert.template.notFound',
+        defaultMessage: 'Unable to find template matching parameters'
     }
 ].reduce(function(prev, next) {
     var spec = next.name.split('.');
     var Ctor = create(spec.pop(), spec.join('.'), next.defaultMessage);
-    prev[next.parent ? next.parent + '.' + next.name : next.name] = function(params) {
+    prev[next.name] = function(params) {
         return new Ctor({params: params});
     };
     return prev;

@@ -1,3 +1,46 @@
+<a name="5.5.3"></a>
+## [5.5.3](https://github.com/softwaregroup-bg/ut-alert/compare/v5.5.2...v5.5.3) (2016-08-12)
+
+
+### Bug Fixes
+
+* publish to npm ([5c32dff](https://github.com/softwaregroup-bg/ut-alert/commit/5c32dff))
+
+
+
+<a name="5.5.2"></a>
+## [5.5.2](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.5.1...v5.5.2) (2016-08-05)
+
+
+
+<a name="5.5.1"></a>
+## [5.5.1](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.5.0...v5.5.1) (2016-08-04)
+
+
+### Bug Fixes
+
+* **sql:** Document the SQL tables and procedures. ([cb50712](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/cb50712))
+* **sql:** Replace TAB indent with 4 spaces indent. ([5e25f35](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/5e25f35))
+
+
+
+<a name="5.5.0"></a>
+# [5.5.0](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.4.1...v5.5.0) (2016-08-04)
+
+
+### Bug Fixes
+
+* **hooks:** Move serialization and channel search out of hooks. Remove dynamic require. ([d6f7fc1](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/d6f7fc1))
+* **lint:** Remove unused variables ([ad9a431](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/ad9a431))
+* **message-send:** When template for specified language is not found, search for template in default system language before give up. ([a67698b](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/a67698b))
+
+
+### Features
+
+* **template:** Create a method to allow use of templates ([0502dd4](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/0502dd4))
+
+
+
 <a name="5.4.1"></a>
 ## [5.4.1](https://git.softwaregroup-bg.com/ut5/ut-alert/compare/v5.3.17...v5.4.1) (2016-07-11)
 

@@ -8,7 +8,7 @@ CREATE TABLE [alert].[messageQueue] ( -- table that stores all the messages that
     [createdOn] datetimeoffset not null, -- when the message is created    
     [statusId] tinyint not null, -- the status of the message
     [priority] smallint not null, -- the priority of the message
-	CONSTRAINT [pk_messageQueue_id] PRIMARY KEY CLUSTERED ([id]),
-	CONSTRAINT [fk_alert_message_statusId_alert_status_id] FOREIGN KEY ([statusId]) REFERENCES [alert].[status] ([id]),
-	CONSTRAINT [fk_alert_message_createdBy_core_actor_id] FOREIGN KEY ([createdBy]) REFERENCES [core].[actor] ([actorId])
+    CONSTRAINT [pk_messageQueue_id] PRIMARY KEY CLUSTERED ([id]),
+    CONSTRAINT [fk_alert_message_statusId_alert_status_id] FOREIGN KEY ([statusId]) REFERENCES [alert].[status] ([id]),
+    CONSTRAINT [fk_alert_message_createdBy_core_actor_id] FOREIGN KEY ([createdBy]) REFERENCES [core].[actor] ([actorId])
 )
