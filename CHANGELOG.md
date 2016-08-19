@@ -1,3 +1,13 @@
+<a name="5.6.0"></a>
+# [5.6.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.5.3...v5.6.0) (2016-08-19)
+
+
+### Features
+
+* UIS-35 ([74bf141](https://github.com/softwaregroup-bg/ut-alert/commit/74bf141))
+
+
+
 <a name="5.5.3"></a>
 ## [5.5.3](https://github.com/softwaregroup-bg/ut-alert/compare/v5.5.2...v5.5.3) (2016-08-12)
 
