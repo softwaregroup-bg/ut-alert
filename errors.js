@@ -49,11 +49,11 @@ module.exports = [
         defaultMessage: 'Invalid message status'
     },
     {
-        name: 'alert.queue.push',
-        defaultMessage: 'ut-core alert.queue.push error'
+        name: 'alert.queueOut.push',
+        defaultMessage: 'ut-core alert.queueOut.push error'
     },
     {
-        name: 'alert.queue.push.missingCreatorId',
+        name: 'alert.queueOut.push.missingCreatorId',
         defaultMessage: 'Missing credentials'
     },
     {

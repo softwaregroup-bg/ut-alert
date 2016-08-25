@@ -1,4 +1,4 @@
-ALTER PROCEDURE [alert].[queue.push]
+ALTER PROCEDURE [alert].[queueOut.push]
     @port varchar(255),
     @channel varchar(128),
     @recipient [core].[arrayList] READONLY,
@@ -13,11 +13,11 @@ BEGIN
         DECLARE @actorId bigint = (select [auth.actorId] from @meta)
 
 		IF @actorId IS NULL
-			RAISERROR(N'alert.queue.push.missingCreatorId', 16, 1);
+			RAISERROR(N'alert.queueOut.push.missingCreatorId', 16, 1);
 
         SELECT 'inserted' resultSetName;
 
-        INSERT INTO [alert].[messageQueue](port, channel, recipient, content, createdBy, createdOn, statusId, priority)
+        INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority)
         OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, INSERTED.content, INSERTED.createdBy, INSERTED.createdOn,
                 @statusName as status, INSERTED.priority
         SELECT @port, @channel, LTRIM(RTRIM([value])), @content, @actorId, SYSDATETIMEOFFSET(), @statusId, @priority

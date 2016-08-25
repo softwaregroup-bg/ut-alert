@@ -8,7 +8,7 @@ BEGIN TRY
     DECLARE @statusFailed int = (SELECT id FROM [alert].[status] WHERE [name] = 'FAILED')
     DECLARE @messageStatus int;
 
-    SELECT @messageStatus = [statusId] FROM [alert].[messageQueue]
+    SELECT @messageStatus = [statusId] FROM [alert].[messageOut]
     WHERE [id] = @messageId;
 
     IF @messageStatus IS NULL
@@ -22,7 +22,7 @@ BEGIN TRY
     UPDATE m
     SET [statusId] = @statusFailed
     OUTPUT INSERTED.id as [messageId], 'FAILED' as [status]
-    FROM [alert].[messageQueue] m
+    FROM [alert].[messageOut] m
     WHERE m.[id] = @messageId;
 END TRY
 BEGIN CATCH
