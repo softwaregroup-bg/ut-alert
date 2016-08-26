@@ -1,3 +1,14 @@
+<a name="5.6.1"></a>
+## [5.6.1](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.0...v5.6.1) (2016-08-26)
+
+
+### Bug Fixes
+
+* MCTUNE-510 ([a09595d](https://github.com/softwaregroup-bg/ut-alert/commit/a09595d))
+* refactoring ([842637a](https://github.com/softwaregroup-bg/ut-alert/commit/842637a))
+
+
+
 <a name="5.6.0"></a>
 # [5.6.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.5.3...v5.6.0) (2016-08-19)
 
