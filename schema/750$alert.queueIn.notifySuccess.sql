@@ -1,4 +1,4 @@
-ALTER PROCEDURE [alert].[queue.notifySuccess] -- used by port to report success after sending
+ALTER PROCEDURE [alert].[queueIn.notifySuccess] -- used by port to report success after sending
     @messageId int -- the ID of the message to report
 AS
 BEGIN TRY
@@ -6,7 +6,7 @@ BEGIN TRY
     DECLARE @statusDelivered int = (SELECT id FROM [alert].[status] WHERE [name] = 'DELIVERED')
     DECLARE @messageStatus int;
 
-    SELECT @messageStatus = [statusId] FROM [alert].[messageQueue]
+    SELECT @messageStatus = [statusId] FROM [alert].[messageIn]
     WHERE [id] = @messageId;
 
     IF @messageStatus IS NULL
@@ -20,7 +20,7 @@ BEGIN TRY
     UPDATE m
     SET [statusId] = @statusDelivered
     OUTPUT INSERTED.id as [messageId], 'DELIVERED' as [status]
-    FROM [alert].[messageQueue] m
+    FROM [alert].[messageIn] m
     WHERE m.[id] = @messageId;
 END TRY
 BEGIN CATCH

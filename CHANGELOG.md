@@ -99,7 +99,7 @@
 
 * change the status of the messages([4779f9e](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/4779f9e))
 * recover deleted SP([184bf78](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/184bf78))
-* **api:** Rename systemMessage.add to queue.push, because it is a better name for method directly pushing message to the queue.([5fbaaaa](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/5fbaaaa))
+* **api:** Rename systemMessage.add to queueOut.push, because it is a better name for method directly pushing message to the queue.([5fbaaaa](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/5fbaaaa))
 * **email:** Remove subject as a column from database and API, as it is send as a part of the email content.([eb4cc27](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/eb4cc27))
 * **lint:** Fix some error in linting package.json (missing dependencies). Remove commented out SQL code.([c145085](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/c145085))
 * **resultsets+email:** Make named resultsets and implement pre- and post-processing on request/response for email to store the subject/html/text into the content using JSON.([757119b](https://git.softwaregroup-bg.com/ut5/ut-alert/commit/757119b))

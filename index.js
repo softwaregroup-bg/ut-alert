@@ -4,10 +4,12 @@ var errors = require('./errors');
 var findChannel = require('./helpers/findChannel');
 module.exports = {
     schema: [{path: path.join(__dirname, '/schema'), linkSP: true}],
-    'queue.push.request.send': require('./hooks/queue.push').send,
-    'queue.push.response.receive': require('./hooks/queue.push').receive,
-    'queue.pop.request.send': require('./hooks/queue.pop').send,
-    'queue.pop.response.receive': require('./hooks/queue.pop').receive,
+    'queueOut.push.request.send': require('./hooks/queueOut.push').send,
+    'queueOut.push.response.receive': require('./hooks/queueOut.push').receive,
+    'queueOut.pop.request.send': require('./hooks/queueOut.pop').send,
+    'queueOut.pop.response.receive': require('./hooks/queueOut.pop').receive,
+    'queueIn.pop.request.send': require('./hooks/queueIn.pop').send,
+    'queueIn.pop.response.receive': require('./hooks/queueIn.pop').receive,
     'message.send': function(msg, $meta) {
         var bus = this.bus;
         var languageCode = msg.languageCode;
@@ -63,7 +65,7 @@ module.exports = {
             // TODO: Find a better way to generate a content without iteration by channels.
             // TODO: SMS channel content is just a string.
             // TODO: Email channel content is an object containing properties "subject" and at least one of "text" or "html".
-            // TODO: Perhaps automate the properties generation with special "root" (for SMS channel) and then validate properties through alert.queue.push.
+            // TODO: Perhaps automate the properties generation with special "root" (for SMS channel) and then validate properties through alert.queueOut.push.
             // TODO: e.g. email: /subject = emailSubjectTemplate; email: /html = emailHtmlTemplate; sms: / = smsTemplate
             if (channel === 'sms') {
                 if (!templateMap.hasOwnProperty('smsTemplate')) {
@@ -100,7 +102,7 @@ module.exports = {
             msg.content = content;
             delete msg.template;
             delete msg.data;
-            $meta.method = 'alert.queue.push';
+            $meta.method = 'alert.queueOut.push';
             return bus.importMethod($meta.method)(msg, $meta);
         });
     }
