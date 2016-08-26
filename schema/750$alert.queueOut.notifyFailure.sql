@@ -1,4 +1,4 @@
-ALTER PROCEDURE [alert].[queue.notifyFailure] -- used by port to report failure on sending
+ALTER PROCEDURE [alert].[queueOut.notifyFailure] -- used by port to report failure on sending
     @messageId int, -- the ID of the message to report
     @errorMessage nvarchar(max), -- the error to report
     @errorCode nvarchar(64) -- the error code to report

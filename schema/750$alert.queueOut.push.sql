@@ -4,6 +4,7 @@ ALTER PROCEDURE [alert].[queueOut.push]
     @recipient [core].[arrayList] READONLY,
     @content nvarchar(max),
     @priority int = 0,
+    @messageInId BIGINT = 0,
     @meta [core].[metaDataTT] READONLY
 AS
 BEGIN
@@ -17,10 +18,10 @@ BEGIN
 
         SELECT 'inserted' resultSetName;
 
-        INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority)
+        INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority, messageInId)
         OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, INSERTED.content, INSERTED.createdBy, INSERTED.createdOn,
-                @statusName as status, INSERTED.priority
-        SELECT @port, @channel, LTRIM(RTRIM([value])), @content, @actorId, SYSDATETIMEOFFSET(), @statusId, @priority
+                @statusName as status, INSERTED.priority, INSERTED.messageInId
+        SELECT @port, @channel, LTRIM(RTRIM([value])), @content, @actorId, SYSDATETIMEOFFSET(), @statusId, @priority, @messageInId
         FROM @recipient
     END TRY
     BEGIN CATCH

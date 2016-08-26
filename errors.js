@@ -9,23 +9,23 @@ module.exports = [
         defaultMessage: 'ut-core alert.queue error'
     },
     {
-        name: 'alert.queue.notifyFailure',
-        defaultMessage: 'ut-core alert.queue.notifyFailure error'
+        name: 'alert.queueOut.notifyFailure',
+        defaultMessage: 'ut-core alert.queueOut.notifyFailure error'
     },
     {
-        name: 'alert.queue.notifyFailure.not',
-        defaultMessage: 'ut-core alert.queue.notifyFailure.not error'
+        name: 'alert.queueOut.notifyFailure.not',
+        defaultMessage: 'ut-core alert.queueOut.notifyFailure.not error'
     },
     {
-        name: 'alert.queue.notifyFailure.not.exists',
+        name: 'alert.queueOut.notifyFailure.not.exists',
         defaultMessage: 'Message does not exists'
     },
     {
-        name: 'alert.queue.notifyFailure.invalid',
-        defaultMessage: 'ut-core alert.queue.notifyFailure.invalid error'
+        name: 'alert.queueOut.notifyFailure.invalid',
+        defaultMessage: 'ut-core alert.queueOut.notifyFailure.invalid error'
     },
     {
-        name: 'alert.queue.notifyFailure.invalid.status',
+        name: 'alert.queueOut.notifyFailure.invalid.status',
         defaultMessage: 'Invalid message status'
     },
     {
