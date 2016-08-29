@@ -4,7 +4,7 @@ ALTER PROCEDURE [alert].[queueOut.push]
     @recipient [core].[arrayList] READONLY,
     @content nvarchar(max),
     @priority int = 0,
-    @messageInId BIGINT = 0,
+    @messageInId BIGINT = NULL,
     @meta [core].[metaDataTT] READONLY
 AS
 BEGIN
