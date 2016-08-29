@@ -1,3 +1,13 @@
+<a name="5.6.2"></a>
+## [5.6.2](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.1...v5.6.2) (2016-08-29)
+
+
+### Bug Fixes
+
+* proc def value ([c53a3c9](https://github.com/softwaregroup-bg/ut-alert/commit/c53a3c9))
+
+
+
 <a name="5.6.1"></a>
 ## [5.6.1](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.0...v5.6.1) (2016-08-26)
 
