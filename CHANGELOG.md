@@ -1,3 +1,13 @@
+<a name="5.6.3"></a>
+## [5.6.3](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.2...v5.6.3) (2016-09-14)
+
+
+### Bug Fixes
+
+* queueIn ([d2a9eb5](https://github.com/softwaregroup-bg/ut-alert/commit/d2a9eb5))
+
+
+
 <a name="5.6.2"></a>
 ## [5.6.2](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.1...v5.6.2) (2016-08-29)
 
