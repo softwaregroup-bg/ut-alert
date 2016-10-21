@@ -41,7 +41,8 @@ module.exports = {
                         return response.templates;
                     }
                     throw errors['alert.template.notFound']({
-                        helperMessage: 'No template found in database', matching: {
+                        helperMessage: 'No template found in database',
+                        matching: {
                             channel: channel,
                             name: msg.template,
                             languageCode: languageCode
@@ -50,7 +51,8 @@ module.exports = {
                 });
             }
             throw errors['alert.template.notFound']({
-                helperMessage: 'No template found in database', matching: {
+                helperMessage: 'No template found in database',
+                matching: {
                     channel: channel,
                     name: msg.template,
                     languageCode: languageCode

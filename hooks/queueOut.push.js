@@ -8,7 +8,7 @@ module.exports = {
     send: function(msg, $meta) {
         msg.channel = findChannel.call(this, msg.port);
         if (msg.channel === 'email') {
-            msg.content = emailSerialize.call(this, msg.content);
+            msg = emailSerialize.call(this, msg);
         }
         return msg;
     },
