@@ -1,3 +1,33 @@
+<a name="5.6.11"></a>
+## [5.6.11](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.10...v5.6.11) (2016-10-24)
+
+
+
+<a name="5.6.10"></a>
+## [5.6.10](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.9...v5.6.10) (2016-10-24)
+
+
+
+<a name="5.6.9"></a>
+## [5.6.9](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.8...v5.6.9) (2016-10-24)
+
+
+
+<a name="5.6.8"></a>
+## [5.6.8](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.7...v5.6.8) (2016-10-24)
+
+
+
+<a name="5.6.7"></a>
+## [5.6.7](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.6...v5.6.7) (2016-10-24)
+
+
+
+<a name="5.6.6"></a>
+## [5.6.6](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.5...v5.6.6) (2016-10-21)
+
+
+
 <a name="5.6.5"></a>
 ## [5.6.5](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.4...v5.6.5) (2016-10-13)
 
