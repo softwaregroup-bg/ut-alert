@@ -1,6 +1,6 @@
 'use strict';
 
-var errors = require('../../errors');
+var errors = require('../errors');
 
 module.exports = {
     send: function(msg) {
