@@ -1,20 +1,14 @@
 'use strict';
 
-var RequestFieldError = require('ut-error').define('alert.RequestFieldError');
+var errors = require('../../errors');
 
 module.exports = {
     send: function(msg) {
         if (typeof msg.content !== 'object') {
-            let err = RequestFieldError('alert.field.value.invalid');
-            err.field = 'content';
-            err.value = msg.content;
-            throw err;
+            throw errors['alert.field.value.invalid']({field: 'content', value: msg.content});
         }
         if (typeof msg.content.subject !== 'string' || msg.content.subject.length <= 0) {
-            let err = RequestFieldError('alert.field.value.invalid');
-            err.field = 'content.subject';
-            err.value = msg.content.subject;
-            throw err;
+            throw errors['alert.field.value.invalid']({field: 'content.subject', value: msg.content.subject});
         }
         let hasHtml = false;
         let hasText = false;
@@ -23,29 +17,20 @@ module.exports = {
         };
         if (msg.content.html) {
             if (typeof msg.content.html !== 'string' || msg.content.html.length <= 0) {
-                let err = RequestFieldError('alert.field.value.invalid');
-                err.field = 'content.html';
-                err.value = msg.content.subject;
-                throw err;
+                throw errors['alert.field.value.invalid']({field: 'content.html', value: msg.content.subject});
             }
             hasHtml = true;
             content.html = msg.content.html;
         }
         if (msg.content.text) {
             if (typeof msg.content.text !== 'string' || msg.content.text.length <= 0) {
-                let err = RequestFieldError('alert.field.value.invalid');
-                err.field = 'content.html';
-                err.value = msg.content.subject;
-                throw err;
+                throw errors['alert.field.value.invalid']({field: 'content.html', value: msg.content.subject});
             }
             hasText = true;
             content.text = msg.content.text;
         }
         if (!hasHtml && !hasText) {
-            let err = RequestFieldError('alert.field.missing');
-            err.field = ['content.html', 'content.text'];
-            err.requiredCount = 1;
-            throw err;
+            throw errors['alert.field.missing']({field: ['content.html', 'content.text'], requiredCount: 1});
         }
 
         msg.content = JSON.stringify(content);
