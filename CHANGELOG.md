@@ -1,3 +1,13 @@
+<a name="5.6.12"></a>
+## [5.6.12](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.11...v5.6.12) (2016-11-18)
+
+
+### Bug Fixes
+
+* refactor errors ([81745db](https://github.com/softwaregroup-bg/ut-alert/commit/81745db))
+
+
+
 <a name="5.6.11"></a>
 ## [5.6.11](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.10...v5.6.11) (2016-10-24)
 
