@@ -12,3 +12,5 @@ IF NOT EXISTS (SELECT 1 FROM [alert].[status] WHERE [name] = N'CANCELED')
     INSERT INTO [alert].[status] ([name]) VALUES (N'CANCELED');
 IF NOT EXISTS (SELECT 1 FROM [alert].[status] WHERE [name] = N'RESUBMITTED')
     INSERT INTO [alert].[status] ([name]) VALUES (N'RESUBMITTED');
+IF NOT EXISTS (SELECT 1 FROM [alert].[status] WHERE [name] = N'UNAPPROVED')
+    INSERT INTO [alert].[status] ([name]) VALUES (N'UNAPPROVED');

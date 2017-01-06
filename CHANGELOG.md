@@ -1,3 +1,28 @@
+<a name="5.7.1"></a>
+## [5.7.1](https://github.com/softwaregroup-bg/ut-alert/compare/v5.7.0...v5.7.1) (2017-01-05)
+
+
+
+<a name="5.7.0"></a>
+# [5.7.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.12...v5.7.0) (2016-12-23)
+
+
+### Features
+
+* update dependencies ([2e2df3e](https://github.com/softwaregroup-bg/ut-alert/commit/2e2df3e))
+
+
+
+<a name="5.6.12"></a>
+## [5.6.12](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.11...v5.6.12) (2016-11-18)
+
+
+### Bug Fixes
+
+* refactor errors ([81745db](https://github.com/softwaregroup-bg/ut-alert/commit/81745db))
+
+
+
 <a name="5.6.11"></a>
 ## [5.6.11](https://github.com/softwaregroup-bg/ut-alert/compare/v5.6.10...v5.6.11) (2016-10-24)
 

@@ -1,17 +1,17 @@
 {
   "name": "ut-alert",
-  "version": "5.6.11",
+  "version": "5.7.1",
   "description": "",
   "main": "index.js",
   "peerDependencies": {
-    "ut-port-sql": "^5.5.0"
+    "ut-port-sql": "^5.7.0"
   },
   "devDependencies": {
-    "ut-tools": "^5.6.0"
+    "ut-tools": "^5.11.1"
   },
   "dependencies": {
-    "lodash.template": "4.3.0",
-    "ut-error": "^5.3.12",
+    "lodash.template": "4.4.0",
+    "ut-error": "^5.3.16",
     "when": "3.7.7"
   },
   "scripts": {
