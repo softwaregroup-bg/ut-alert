@@ -10,10 +10,10 @@ BEGIN TRY
     WHERE [id] = @messageId;
 
     IF @messageStatus IS NULL
-        RAISERROR(N'alert.message.not.exists', 16, 1);
+        RAISERROR(N'alert.messageNotExists', 16, 1);
 
     IF @messageStatus != @statusProcessing AND @messageStatus != @statusDelivered
-        RAISERROR(N'alert.message.invalid.status', 16, 1);
+        RAISERROR(N'alert.messageInvalidStatus', 16, 1);
 
     SELECT 'updated' resultSetName, 1 single;
 

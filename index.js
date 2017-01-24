@@ -18,7 +18,7 @@ module.exports = {
             if (!languageCode) {
                 languageCode = bus.config.defaultLanguage;
                 if (!languageCode) {
-                    throw errors['alert.template.notFound']({helperMessage: 'Language code is not specified'});
+                    throw errors['alert.templateNotFound']({helperMessage: 'Language code is not specified'});
                 }
             }
         }
@@ -40,7 +40,7 @@ module.exports = {
                     if (Array.isArray(response.templates) && response.templates.length > 0) {
                         return response.templates;
                     }
-                    throw errors['alert.template.notFound']({
+                    throw errors['alert.templateNotFound']({
                         helperMessage: 'No template found in database',
                         matching: {
                             channel: channel,
@@ -50,7 +50,7 @@ module.exports = {
                     });
                 });
             }
-            throw errors['alert.template.notFound']({
+            throw errors['alert.templateNotFound']({
                 helperMessage: 'No template found in database',
                 matching: {
                     channel: channel,
@@ -71,19 +71,19 @@ module.exports = {
             // TODO: e.g. email: /subject = emailSubjectTemplate; email: /html = emailHtmlTemplate; sms: / = smsTemplate
             if (channel === 'sms') {
                 if (!templateMap.hasOwnProperty('smsTemplate')) {
-                    throw errors['alert.template.notFound'](
+                    throw errors['alert.templateNotFound'](
                         {helperMessage: `Unable to find entry to itemName corresponding to itemType "smsTemplate" for template "${msg.template}"`}
                     );
                 }
                 content = lodashTemplate(templateMap.smsTemplate.content)(msg.data || {});
             } else if (channel === 'email') {
                 if (!templateMap.hasOwnProperty('emailSubjectTemplate')) {
-                    throw errors['alert.template.notFound'](
+                    throw errors['alert.templateNotFound'](
                         {helperMessage: `Unable to find entry to itemName corresponding to itemType "emailSubjectTemplate" for template "${msg.template}"`}
                     );
                 }
                 if (!templateMap.hasOwnProperty('emailTextTemplate') && !templateMap.hasOwnProperty('emailHtmlTemplate')) {
-                    throw errors['alert.template.notFound'](
+                    throw errors['alert.templateNotFound'](
                         {
                             helperMessage: `Unable to find entry to itemName corresponding to itemType "emailTextTemplate" or "emailHtmlTemplate" for template "${msg.template}"`
                         }
@@ -99,7 +99,7 @@ module.exports = {
                     content.html = lodashTemplate(templateMap.emailHtmlTemplate.content)(msg.data || {});
                 }
             } else {
-                throw errors['alert.template.notFound']({helperMessage: `Channel "${channel}" is not supported, yet`});
+                throw errors['alert.templateNotFound']({helperMessage: `Channel "${channel}" is not supported, yet`});
             }
             msg.content = content;
             delete msg.template;
