@@ -5,10 +5,10 @@ var errors = require('../errors');
 module.exports = {
     send: function(msg) {
         if (typeof msg.content !== 'object') {
-            throw errors['alert.field.value.invalid']({field: 'content', value: msg.content});
+            throw errors['alert.fieldValueInvalid']({field: 'content', value: msg.content});
         }
         if (typeof msg.content.subject !== 'string' || msg.content.subject.length <= 0) {
-            throw errors['alert.field.value.invalid']({field: 'content.subject', value: msg.content.subject});
+            throw errors['alert.fieldValueInvalid']({field: 'content.subject', value: msg.content.subject});
         }
         let hasHtml = false;
         let hasText = false;
@@ -17,20 +17,20 @@ module.exports = {
         };
         if (msg.content.html) {
             if (typeof msg.content.html !== 'string' || msg.content.html.length <= 0) {
-                throw errors['alert.field.value.invalid']({field: 'content.html', value: msg.content.subject});
+                throw errors['alert.fieldValueInvalid']({field: 'content.html', value: msg.content.subject});
             }
             hasHtml = true;
             content.html = msg.content.html;
         }
         if (msg.content.text) {
             if (typeof msg.content.text !== 'string' || msg.content.text.length <= 0) {
-                throw errors['alert.field.value.invalid']({field: 'content.html', value: msg.content.subject});
+                throw errors['alert.fieldValueInvalid']({field: 'content.html', value: msg.content.subject});
             }
             hasText = true;
             content.text = msg.content.text;
         }
         if (!hasHtml && !hasText) {
-            throw errors['alert.field.missing']({field: ['content.html', 'content.text'], requiredCount: 1});
+            throw errors['alert.fieldMissing']({field: ['content.html', 'content.text'], requiredCount: 1});
         }
 
         msg.content = JSON.stringify(content);
