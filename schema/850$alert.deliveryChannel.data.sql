@@ -1,6 +1,11 @@
-IF NOT EXISTS (SELECT 1 FROM [alert].[deliveryChannel] WHERE [name] = N'sms')
-    INSERT INTO [alert].[deliveryChannel] ([name]) VALUES (N'sms');
-IF NOT EXISTS (SELECT 1 FROM [alert].[deliveryChannel] WHERE [name] = N'email')
-    INSERT INTO [alert].[deliveryChannel] ([name]) VALUES (N'email');
-IF NOT EXISTS (SELECT 1 FROM [alert].[deliveryChannel] WHERE [name] = N'push')
-    INSERT INTO [alert].[deliveryChannel] ([name]) VALUES (N'push');
+MERGE INTO [alert].[deliveryChannel] AS target
+USING
+    (VALUES
+        ('sms'),
+        ('email'),
+        ('push')
+    ) AS source ([name])
+ON target.[name] = source.[name]
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ([name])
+VALUES ([name]);

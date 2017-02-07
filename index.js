@@ -47,7 +47,7 @@ module.exports = {
                 firebaseNotificationMessage = pushFirebaseHelper.appendExtra(firebaseNotificationMessage, firebaseExtra);
             }
 
-            var firebaseRecipients = [];
+            var firebaseRecipients = []; // Declare other provider recipients arrays here.
             var alertMessageSendPromises = [];
 
             // Iterate over each of the actor's devices, and fill the appropriate recipient array.
@@ -55,9 +55,8 @@ module.exports = {
 
             result.device.forEach((device) => {
                 let recipient = JSON.stringify({
-                    actorId: msg.actorId, // Remove this, when the user.device.update can update the token only by installationId!
-                    installationId: device.installationId,
-                    pushNotificationToken: device.pushNotificationToken
+                    actorId: msg.actorId,
+                    installationId: device.installationId
                 });
                 if (device.deviceOS === 'android') {
                     firebaseRecipients.push(recipient);

@@ -1,7 +1,7 @@
 ALTER PROCEDURE [alert].[queueOut.push]
     @port varchar(255),
     @channel varchar(128),
-    @recipient [core].[arrayListLarge] READONLY, -- REVERT THIS TO arrayList !!!
+    @recipient [core].[arrayList] READONLY,
     @content nvarchar(max),
     @priority int = 0,
     @messageInId BIGINT = NULL,
