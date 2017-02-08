@@ -5,7 +5,7 @@ var joi = require('joi');
 module.exports = {
     'push.notification.send': {
         description: 'Send push notifications to a number of devices, specified by an actorId',
-        payload: joi.object().keys({
+        params: joi.object().keys({
             actorId: joi.number().integer().required(),
             notification: joi.object().keys({
                 firebase: joi.object().keys({
@@ -15,6 +15,6 @@ module.exports = {
             }),
             data: joi.object()
         }).or('notification', 'data'),
-        result: joi.any()
+        result: joi.array()
     }
 };
