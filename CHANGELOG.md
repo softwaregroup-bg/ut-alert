@@ -1,3 +1,13 @@
+<a name="5.7.4"></a>
+## [5.7.4](https://github.com/softwaregroup-bg/ut-alert/compare/v5.7.3...v5.7.4) (2017-03-08)
+
+
+### Bug Fixes
+
+* dependencies ([154b405](https://github.com/softwaregroup-bg/ut-alert/commit/154b405))
+
+
+
 <a name="5.7.3"></a>
 ## [5.7.3](https://github.com/softwaregroup-bg/ut-alert/compare/v5.7.2...v5.7.3) (2017-02-09)
 
