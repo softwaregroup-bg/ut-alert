@@ -4,16 +4,16 @@
   "description": "",
   "main": "index.js",
   "peerDependencies": {
-    "ut-port-sql": "^5.7.0"
+    "ut-port-sql": "^6.0.1"
   },
   "devDependencies": {
-    "ut-tools": "^5.11.1"
+    "ut-tools": "^5.13.5"
   },
   "dependencies": {
     "joi": "10.0.6",
     "lodash.assign": "4.2.0",
     "lodash.template": "4.4.0",
-    "ut-error": "^5.3.16",
+    "ut-error": "^5.4.0",
     "when": "3.7.7"
   },
   "scripts": {
