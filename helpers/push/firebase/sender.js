@@ -168,8 +168,8 @@ class FirebaseSender {
     notifyFailure(message, error) {
         return this.bus.importMethod('alert.queueOut.notifyFailure')({
             messageId: message.id,
-            errorMessage: 'Failed to send',
-            errorCode: 'firebase'
+            errorMessage: error.message,
+            errorCode: error.code
         });
     }
 
