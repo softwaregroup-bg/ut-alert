@@ -7,6 +7,8 @@ module.exports = {
         description: 'Send push notifications to a number of devices, specified by an actorId',
         params: joi.object().keys({
             actorId: joi.number().integer().required(),
+            installationId: joi.string(),
+            immediate: joi.boolean().default(false),
             notification: joi.object().keys({
                 firebase: joi.object().keys({
                     title: joi.string(),
@@ -15,6 +17,6 @@ module.exports = {
             }),
             data: joi.object()
         }).or('notification', 'data'),
-        result: joi.array()
+        result: joi.any()
     }
 };

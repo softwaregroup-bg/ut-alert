@@ -13,6 +13,7 @@
     "joi": "10.0.6",
     "lodash.assign": "4.2.0",
     "lodash.template": "4.4.0",
+    "requestretry": "^1.12.0",
     "ut-error": "^5.4.0",
     "when": "3.7.7"
   },

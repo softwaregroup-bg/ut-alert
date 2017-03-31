@@ -5,11 +5,11 @@ ALTER PROCEDURE [alert].[queueOut.push]
     @content nvarchar(max),
     @priority int = 0,
     @messageInId BIGINT = NULL,
+    @statusName nvarchar(255) = 'QUEUED',
     @meta [core].[metaDataTT] READONLY
 AS
 BEGIN
     BEGIN TRY
-        DECLARE @statusName nvarchar(255) = 'QUEUED'
         DECLARE @statusId int = (select id from [alert].[status] where name = @statusName)
         DECLARE @actorId bigint = (select [auth.actorId] from @meta)
 
