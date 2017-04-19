@@ -131,13 +131,21 @@ class FirebaseSender {
         if (response.failure > 0) {
             let fcmError = result.error;
             let rejectionError = errors.fcm['response.serviceUnavailable'];
+            let invalidPushNotificationToken = false;
             if (fcmError === this.firebaseErrors.invalidRegistration) {
-                // TODO: invalid token, should remove that token?
                 rejectionError = errors.fcm['response.invalidRegistration'];
+                invalidPushNotificationToken = true;
             }
             if (fcmError === this.firebaseErrors.notRegistered) {
-                // TODO: should remove that token?
                 rejectionError = errors.fcm['response.notRegistered'];
+                invalidPushNotificationToken = true;
+            }
+            if (invalidPushNotificationToken) {
+                // When Firebase responds with InvalidRegistration or NotRegistered -
+                // set the device's record pushNotficicationToken field to null.
+                return this.removeDevicePushNotificationToken(recipient.actorId, recipient.installationId).then(() => {
+                    return this.notifyFailure(message, rejectionError);
+                });
             }
             // return when.reject(rejectionError);
             return this.notifyFailure(message, rejectionError);
@@ -165,6 +173,16 @@ class FirebaseSender {
         });
     }
 
+    removeDevicePushNotificationToken(actorId, installationId) {
+        return this.bus.importMethod('user.device.update')({
+            actorDevice: {
+                actorId,
+                installationId,
+                pushNotificationToken: null
+            }
+        });
+    }
+
     notifyFailure(message, error) {
         return this.bus.importMethod('alert.queueOut.notifyFailure')({
             messageId: message.id,
@@ -178,6 +196,9 @@ class FirebaseSender {
     static buildRecipientsArray(devices, actorId) {
         var recipients = [];
         devices.forEach((device) => {
+            if (!device.pushNotificationToken) {
+                return; // Skip devices, that don't have push notification token.
+            }
             let recipient = JSON.stringify({
                 actorId: actorId,
                 installationId: device.installationId
