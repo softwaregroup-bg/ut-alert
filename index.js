@@ -1,11 +1,8 @@
 var path = require('path');
 var lodashTemplate = require('lodash.template');
-var lodashAssign = require('lodash.assign');
 var errors = require('./errors');
 var findChannel = require('./helpers/findChannel');
-
-var FirebaseTemplateParser = require('./helpers/push/firebase/templateParser');
-var FirebaseSender = require('./helpers/push/firebase/sender');
+var pushHelpers = require('./helpers/push');
 
 module.exports = {
     schema: [{path: path.join(__dirname, '/schema'), linkSP: true}],
@@ -15,77 +12,129 @@ module.exports = {
     'queueOut.pop.response.receive': require('./hooks/queueOut.pop').receive,
     'queueIn.pop.request.send': require('./hooks/queueIn.pop').send,
     'queueIn.pop.response.receive': require('./hooks/queueIn.pop').receive,
-    'push.notification.send': function(msg, $meta) {
-        var userDeviceGetParameters = {
-            actorId: msg.actorId
-        };
-        if (msg.hasOwnProperty('installationId')) {
-            userDeviceGetParameters.installationId = msg.installationId;
-        }
-        return this.bus.importMethod('user.device.get')(userDeviceGetParameters)
-        .then((result) => {
-            // Prepare the appropriate format of the notification for each of the supported providers.
-            // Currenlty only Google Firebase is supported with their 3 types - data+notification | data | notification
-
-            var firebaseTemplateParser = new FirebaseTemplateParser(msg);
-            var firebaseNotificationMessage = firebaseTemplateParser.prepareNotification();
-            var firebaseRecipients = FirebaseSender.buildRecipientsArray(result.device, msg.actorId);
-
-            var alertMessageSendPromises = []; // Array containing send promises for each of the Provider.
-            if (firebaseRecipients.length > 0) {
-                var message = lodashAssign({}, firebaseNotificationMessage, {recipient: firebaseRecipients});
-                if (msg.immediate) {
-                    // When the immediate parameter in the message is set to true,
-                    // insert the message as 'PROCESSING', to avoid the Cron pulling them.
-                    // Instead they will be processed immediately in the next then().
-                    message.statusName = 'PROCESSING';
-                }
-                var $alertMessageSendMeta = lodashAssign({}, $meta, { method: 'alert.message.send' });
-                alertMessageSendPromises.push(
-                    this.bus.importMethod('alert.message.send')(message, $alertMessageSendMeta));
+    /**
+     * Internal methods for handling success and failure of sending a push notification.
+     * These are called either by the [alert.push.notification.send] or by a cron in the implementations
+     * after the sending has finished and a response has been received by the provider.
+     */
+    'push.notification.handleSuccess': function(msg, $meta) {
+        var { message, sendResponse } = msg; // message is the inserted row of alert.queueOut.push
+        var { actorId, installationId } = JSON.parse(message.recipient);
+        var updatePushNotificationToken = (updatedPushNotificationToken, actorId, installationId) => this.bus.importMethod('user.device.update')({
+            actorDevice: {
+                actorId,
+                installationId,
+                pushNotificationToken: updatedPushNotificationToken
             }
-
+        });
+        var notifySuccess = () => this.bus.importMethod('alert.queueOut.notifySuccess')({
+            messageId: message.id,
+            refId: sendResponse.refId
+        });
+        if (sendResponse.updatedPushNotificationToken) {
+            return updatePushNotificationToken(sendResponse.updatedPushNotificationToken, actorId, installationId)
+                .then(notifySuccess);
+        } else {
+            return notifySuccess();
+        }
+    },
+    'push.notification.handleFailure': function(msg, $meta) {
+        var { message, errorResponse } = msg; // message is the inserted row of alert.queueOut.push
+        var { actorId, installationId } = JSON.parse(message.recipient);
+        var removePushNotificationToken = (actorId, installationId) => this.bus.importMethod('user.device.update')({
+            actorDevice: {
+                actorId,
+                installationId,
+                pushNotificationToken: null
+            }
+        });
+        var notifyFailure = () => this.bus.importMethod('alert.queueOut.notifyFailure')({
+            messageId: message.id,
+            errorMessage: (errorResponse && errorResponse.error && errorResponse.error.message) || 'Failed to send push notification.',
+            errorCode: (errorResponse && errorResponse.error && errorResponse.error.code) || 'pushNotificationFailure'
+        });
+        if (errorResponse.removePushNotificationToken) {
+            return removePushNotificationToken(actorId, installationId)
+                .then(notifyFailure);
+        } else {
+            return notifyFailure();
+        }
+    },
+    /**
+     * Sends a push notification. Currently only Google Firebase is supported.
+     * Data in "notification" can be filtered or remapped to another place in the actual call
+     * to the provider, according to provider's documentation.
+     *
+     * msg: {
+     *   immediate: boolean, (defaults to false)
+     *   notification: {
+     *     title: "You have a new Message!",
+     *     body: "Sample description of the notification"
+     *     ...
+     *   },
+     *   data: {
+     *     foo: 'foo',
+     *     bar: 'bar', ...
+     *   },
+     *   extra: {
+     *     collapse_key: "collapse_key",
+     *     mutable_content: true,
+     *     priority: "normal" | "high",
+     *     time_to_live: 3600
+     *   }
+     * }
+     */
+    'push.notification.send': function(msg, $meta) {
+        var context = this;
+        var config = this.bus.config.alert;
+        var userDeviceGetParams = {
+            actorId: msg.actorId,
+            installationId: msg.installationId ? msg.installationId : null
+        };
+        var notification = {
+            notification: msg.notification ? msg.notification : {},
+            data: msg.data ? msg.data : {},
+            extra: msg.extra ? msg.extra : {},
+            // System info
+            immediate: msg.immediate ? msg.immediate : false,
+            providerAlertMessageSends: [] // "alert.message.send" msg objects for each supported provider
+        };
+        // When the user.device.get procedure returns - append the devices array to the notification object.
+        var getDevices = (notification) => this.bus.importMethod('user.device.get')(userDeviceGetParams).then(response => {
+            notification.devices = response.device.filter(device => {
+                return device.pushNotificationToken !== null;
+            });
+            return notification;
+        });
+        var prepareAlertMessageSends = (notification) => {
+            pushHelpers.preparePayload(notification);
+            pushHelpers.distributeRecipients(notification, config.push.deviceOSToProvider);
+            delete notification.devices;
+            return notification;
+        };
+        var prepareAlertMessageSendPromises = (notification) => {
+            var alertMessageSendPromises = [];
+            notification.providerAlertMessageSends.forEach(alertMessageSend => {
+                if (notification.immediate) {
+                    alertMessageSend.statusName = 'PROCESSING';
+                }
+                delete alertMessageSend.immediate;
+                $meta.method = 'alert.message.send';
+                alertMessageSendPromises.push(context.config[$meta.method](alertMessageSend, $meta));
+            });
             return Promise.all(alertMessageSendPromises);
-        }).then((response) => {
+        };
+        var handleAlertMessageSendResponse = (response) => {
+            // This is the "default" behavior, the messages are queued and awaiting to be processed.
             if (!response.length) {
                 return response;
             }
-            // Response contains array of inserted rows for each provieder, which are marked as PROCESSING.
-            // That menas that they have to be processed immediately.
-            var insertedRows = [];
-            response.forEach(providerResponse => {
-                const inserted = providerResponse.inserted;
-                inserted.length && inserted.forEach(insertedRow => {
-                    if (insertedRow.status === 'PROCESSING') {
-                        insertedRows.push(insertedRow);
-                    }
-                });
-            });
-            if (!insertedRows.length) {
-                return response;
-            }
-
-            // Initialize an array, that will containe send promises.
-            // Also Instantiate a sender object for each supported provider.
-            // Currently only Firebase is supported.
-            var sendNotificationPromises = [];
-            var firebaseSender = new FirebaseSender(this.bus, this.bus.config.push.firebase);
-
-            insertedRows.length && insertedRows.forEach(insertedRow => {
-                let content = JSON.parse(insertedRow.content);
-                if (content.provider === 'firebase') {
-                    sendNotificationPromises.push(firebaseSender.sendNotification(insertedRow));
-                } // if (content.provider === 'apple) { ... }
-            });
-
-            if (sendNotificationPromises.length) {
-                return Promise.all(sendNotificationPromises).then(() => {
-                    return response;
-                });
-            } else {
-                return response;
-            }
-        });
+            return pushHelpers.handleImmediatePushNotificationSend(response, context);
+        };
+        return getDevices(notification)
+            .then(prepareAlertMessageSends)
+            .then(prepareAlertMessageSendPromises)
+            .then(handleAlertMessageSendResponse);
     },
     'message.send': function(msg, $meta) {
         var bus = this.bus;
@@ -110,13 +159,12 @@ module.exports = {
             msg.content = getContent(templates, channel, msg.template, msg.data, msg.payload);
             delete msg.template;
             delete msg.data;
+            delete msg.payload;
             $meta.method = 'alert.queueOut.push';
             return bus.importMethod($meta.method)(msg, $meta);
         });
     }
 };
-
-// Helper functions
 
 const getTemplates = (bus, response, channel, languageCode, msgTemplate) => {
     if (Array.isArray(response.templates) && response.templates.length > 0) {
