@@ -6,6 +6,21 @@ module.exports = [
         level: 'error'
     },
     {
+        name: 'alert.push',
+        defaultMessage: 'Push notifications error',
+        level: 'error'
+    },
+    {
+        name: 'alert.push.providerNotImplemented',
+        defaultMessage: 'Push notifications: Provider is not yet implemented',
+        level: 'error'
+    },
+    {
+        name: 'alert.push.ambiguousResultForActorDevice',
+        defaultMessage: 'Zero or more than one device returned for an actorId & installationId!',
+        level: 'warn'
+    },
+    {
         name: 'alert.messageNotExists',
         defaultMessage: 'Message does not exists',
         level: 'error'
