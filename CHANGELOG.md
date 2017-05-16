@@ -1,3 +1,13 @@
+<a name="5.8.0"></a>
+# [5.8.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.7.6...v5.8.0) (2017-05-16)
+
+
+### Features
+
+* add firebase support ([69beac8](https://github.com/softwaregroup-bg/ut-alert/commit/69beac8))
+
+
+
 <a name="5.7.6"></a>
 ## [5.7.6](https://github.com/softwaregroup-bg/ut-alert/compare/v5.7.5...v5.7.6) (2017-04-24)
 
