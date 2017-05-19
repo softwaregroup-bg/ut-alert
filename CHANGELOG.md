@@ -1,3 +1,13 @@
+<a name="5.8.1"></a>
+## [5.8.1](https://github.com/softwaregroup-bg/ut-alert/compare/v5.8.0...v5.8.1) (2017-05-19)
+
+
+### Bug Fixes
+
+* distributing recipients for push notificaiton send ([0ddd77f](https://github.com/softwaregroup-bg/ut-alert/commit/0ddd77f))
+
+
+
 <a name="5.8.0"></a>
 # [5.8.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.7.6...v5.8.0) (2017-05-16)
 
