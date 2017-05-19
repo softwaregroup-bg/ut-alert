@@ -58,7 +58,10 @@ const distributeRecipients = function(notification, osToProviderMap) {
             providerAlertMessageSendMsg.recipient.push(recipient);
         });
     }
-    notification.providerAlertMessageSends = Object.values(providerAlertMessageSends);
+    var providerKeys = Object.keys(providerAlertMessageSends);
+    providerKeys.forEach(providerKey => {
+        notification.providerAlertMessageSends.push(providerAlertMessageSends[providerKey]);
+    });
 };
 
 /**
