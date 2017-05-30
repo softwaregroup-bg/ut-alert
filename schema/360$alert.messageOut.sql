@@ -5,7 +5,7 @@ CREATE TABLE [alert].[messageOut] ( -- table that stores all the messages that a
     [recipient] nvarchar(255) not null, -- the number or the email address that is receiving the message
     [content] nvarchar(max) not null,  -- the message content
     [createdBy] bigint not null, -- the user that created the message
-    [createdOn] datetimeoffset not null, -- when the message is created    
+    [createdOn] datetimeoffset(7) not null, -- when the message is created
     [statusId] tinyint not null, -- the status of the message
     [priority] smallint not null, -- the priority of the message
     [messageInId] bigint null, -- in/out cross reference
