@@ -1,3 +1,13 @@
+<a name="5.8.8"></a>
+## [5.8.8](https://github.com/softwaregroup-bg/ut-alert/compare/v5.8.7...v5.8.8) (2017-05-30)
+
+
+### Bug Fixes
+
+* avoid dropping tabletypes ([0e04885](https://github.com/softwaregroup-bg/ut-alert/commit/0e04885))
+
+
+
 <a name="5.8.7"></a>
 ## [5.8.7](https://github.com/softwaregroup-bg/ut-alert/compare/v5.8.6...v5.8.7) (2017-05-22)
 
