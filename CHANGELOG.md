@@ -1,3 +1,13 @@
+<a name="5.8.9"></a>
+## [5.8.9](https://github.com/softwaregroup-bg/ut-alert/compare/v5.8.8...v5.8.9) (2017-06-19)
+
+
+### Bug Fixes
+
+* work with history triggers ([#16](https://github.com/softwaregroup-bg/ut-alert/issues/16)) ([dd3f3a3](https://github.com/softwaregroup-bg/ut-alert/commit/dd3f3a3))
+
+
+
 <a name="5.8.8"></a>
 ## [5.8.8](https://github.com/softwaregroup-bg/ut-alert/compare/v5.8.7...v5.8.8) (2017-05-30)
 
