@@ -10,7 +10,7 @@ BEGIN TRY
 
     UPDATE m
     SET [statusId] =  @statusProcessing
-    OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, INSERTED.content
+    OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient,  DecryptByKey(INSERTED.content, 1 ,  HashBytes('SHA1', CONVERT(varbinary, INSERTED.id)))
     FROM
     (
         SELECT TOP (@count) [id]
