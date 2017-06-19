@@ -16,7 +16,7 @@ BEGIN TRY
     UPDATE m
     SET [statusId] =  @statusProcessing
     OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.sender, INSERTED.content
-    INTO #messageIn ()
+    INTO #messageIn (id, port, channel, sender, content)
     FROM
     (
         SELECT TOP 1 [id]
