@@ -1,3 +1,13 @@
+<a name="5.8.10"></a>
+## [5.8.10](https://github.com/softwaregroup-bg/ut-alert/compare/v5.8.9...v5.8.10) (2017-06-19)
+
+
+### Bug Fixes
+
+* use table variable instead of temp table ([#17](https://github.com/softwaregroup-bg/ut-alert/issues/17)) ([cf22094](https://github.com/softwaregroup-bg/ut-alert/commit/cf22094))
+
+
+
 <a name="5.8.9"></a>
 ## [5.8.9](https://github.com/softwaregroup-bg/ut-alert/compare/v5.8.8...v5.8.9) (2017-06-19)
 

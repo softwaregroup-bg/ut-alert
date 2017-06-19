@@ -1,6 +1,6 @@
 {
   "name": "ut-alert",
-  "version": "5.8.9",
+  "version": "5.8.10",
   "description": "",
   "main": "index.js",
   "peerDependencies": {
