@@ -5,11 +5,14 @@ BEGIN TRY
     DECLARE @statusQueued int = (Select id FROM [alert].[status] WHERE [name] = 'QUEUED')
     DECLARE @statusProcessing int = (Select id FROM [alert].[status] WHERE [name] = 'PROCESSING')
 
+    DECLARE @messageIn TABLE(id BIGINT, port VARCHAR(255), channel VARCHAR(100), sender VARCHAR(255), content VARCHAR(MAX))
+
     SELECT 'messages' resultSetName;
 
     UPDATE m
     SET [statusId] =  @statusProcessing
     OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.sender, INSERTED.content
+    INTO @messageIn (id, port, channel, sender, content)
     FROM
     (
         SELECT TOP 1 [id]
@@ -18,6 +21,10 @@ BEGIN TRY
         ORDER BY m.[priority] DESC
     ) s
     JOIN [alert].[messageIn] m on s.Id = m.id
+    
+    SELECT id, port, channel, sender, content
+    FROM @messageIn
+
 END TRY
 BEGIN CATCH
     EXEC core.error

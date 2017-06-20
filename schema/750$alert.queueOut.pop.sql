@@ -5,12 +5,18 @@ AS
 BEGIN TRY
     DECLARE @statusQueued int = (Select id FROM [alert].[status] WHERE [name] = 'QUEUED')
     DECLARE @statusProcessing int = (Select id FROM [alert].[status] WHERE [name] = 'PROCESSING')
+    
+    DECLARE @messageOut TABLE(id BIGINT, port VARCHAR(255), channel VARCHAR(100), recipient VARCHAR(255), content NVARCHAR(MAX))
+    
 
     SELECT 'messages' resultSetName;
+
+    OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent
 
     UPDATE m
     SET [statusId] =  @statusProcessing
     OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient,  DecryptByKey(INSERTED.content, 1 ,  HashBytes('SHA1', CONVERT(varbinary, INSERTED.id)))
+    INTO @messageOut (id, port, channel, recipient, content)
     FROM
     (
         SELECT TOP (@count) [id]
@@ -19,6 +25,9 @@ BEGIN TRY
         ORDER BY m.[priority] DESC
     ) s
     JOIN [alert].[messageOut] m on s.Id = m.id
+    
+    SELECT id, port, channel, recipient, content
+    FROM @messageOut
 END TRY
 BEGIN CATCH
     EXEC core.error
