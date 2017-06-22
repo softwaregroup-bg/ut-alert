@@ -3,7 +3,7 @@ CREATE TABLE [alert].[messageOut] ( -- table that stores all the messages that a
     [port] varchar(255) not null, -- implementation dependant
     [channel] varchar(100) not null, -- channel is by what the message should be sent, for example "email", "sms"
     [recipient] nvarchar(255) not null, -- the number or the email address that is receiving the message
-    [content] nvarchar(max) not null,  -- the message content
+    [content] varbinary(max) not null,  -- the message content
     [createdBy] bigint not null, -- the user that created the message
     [createdOn] datetimeoffset(7) not null, -- when the message is created
     [statusId] tinyint not null, -- the status of the message
