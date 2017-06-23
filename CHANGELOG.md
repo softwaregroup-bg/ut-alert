@@ -1,3 +1,13 @@
+<a name="5.10.0"></a>
+# [5.10.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.9.0...v5.10.0) (2017-06-22)
+
+
+### Features
+
+* add encryption ([92d127b](https://github.com/softwaregroup-bg/ut-alert/commit/92d127b))
+
+
+
 <a name="5.9.0"></a>
 # [5.9.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.8.10...v5.9.0) (2017-06-22)
 
