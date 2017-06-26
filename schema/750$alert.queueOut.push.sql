@@ -15,8 +15,8 @@ BEGIN
 
 		IF @actorId IS NULL
 			RAISERROR(N'alert.missingCreatorId', 16, 1);
-
-        declare @id bigint
+        
+        declare @insertedIds core.arrayNumberList
         -- Open the symmetric key with which to encrypt the data.  
         OPEN SYMMETRIC KEY MessageOutContent_Key  
             DECRYPTION BY CERTIFICATE MessageOutContent;  
@@ -25,16 +25,17 @@ BEGIN
         SELECT 'inserted' resultSetName;
 
         INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority, messageInId)       
+        OUTPUT inserted.id into @insertedIds(value)
         SELECT @port, @channel, LTRIM(RTRIM([value])), convert(varbinary, @content), @actorId, SYSDATETIMEOFFSET(), @statusId, @priority, @messageInId
         FROM @recipient
 
-        set @id = SCOPE_IDENTITY()
-
-        UPDATE [alert].[messageOut]
-        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT( varbinary  , @id)))
-            OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, INSERTED.content, INSERTED.createdBy, INSERTED.createdOn,
+        UPDATE mOut
+        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT( varbinary, mOut.id)))
+            OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, @content as content, INSERTED.createdBy, INSERTED.createdOn,
                 @statusName as status, INSERTED.priority, INSERTED.messageInId
-        WHERE id = @id
+        FROM @insertedIds
+        JOIN [alert].[messageOut] mOut on mOut.id = value
+        
     END TRY
     BEGIN CATCH
          EXEC [core].[error]
