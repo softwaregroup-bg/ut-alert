@@ -22,7 +22,7 @@ module.exports = [
     },
     {
         name: 'alert.messageNotExists',
-        defaultMessage: 'Message does not exists',
+        defaultMessage: 'Message does not exist',
         level: 'error'
     },
     {
@@ -37,7 +37,7 @@ module.exports = [
     },
     {
         name: 'alert.templateNotFound',
-        defaultMessage: 'Unable to find template matching parameters',
+        defaultMessage: 'Unable to find a template that matches the parameters',
         level: 'error'
     },
     {
