@@ -1,3 +1,13 @@
+<a name="5.11.2"></a>
+## [5.11.2](https://github.com/softwaregroup-bg/ut-alert/compare/v5.11.1...v5.11.2) (2017-06-29)
+
+
+### Bug Fixes
+
+* change order of the scripts ([fe4fb89](https://github.com/softwaregroup-bg/ut-alert/commit/fe4fb89))
+
+
+
 <a name="5.11.1"></a>
 ## [5.11.1](https://github.com/softwaregroup-bg/ut-alert/compare/v5.11.0...v5.11.1) (2017-06-27)
 
