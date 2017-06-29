@@ -1,3 +1,18 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.11.2...v6.0.0) (2017-06-29)
+
+
+### Features
+
+* ABT-1756: change flow of sending push notifications ([#23](https://github.com/softwaregroup-bg/ut-alert/issues/23)) ([cffac85](https://github.com/softwaregroup-bg/ut-alert/commit/cffac85))
+
+
+### BREAKING CHANGES
+
+* sending push notifications now does not rely on a common push notifications template - each type of notification from now on should have its own template seeded in the corresponding implementation.
+
+
+
 <a name="5.11.2"></a>
 ## [5.11.2](https://github.com/softwaregroup-bg/ut-alert/compare/v5.11.1...v5.11.2) (2017-06-29)
 
