@@ -4,39 +4,27 @@ const errors = require('../../errors');
 
 /**
  * Creates a common alert.message.send msg.
+ * Note that the data passed is equal for all providers.
+ * If templates for any future provider require more fields in data, supply them too.
+ * Templates that don't use all data variables will just ignore the extra ones.
+ *
  * @param {String} operatingSystem - the OS of the device
  * @param {Object} notification
  * @param {Object} osToProviderMap - map between device OS and provider
  */
 const buildCommonAlertMessageSendMsg = function(operatingSystem, notification, osToProviderMap) {
+    const provider = osToProviderMap[operatingSystem];
     return {
-        port: osToProviderMap[operatingSystem],
-        channel: 'push',
-        languageCode: 1,
+        port: provider,
+        languageCode: notification.languageCode,
         priority: 1,
-        template: 'push.common',
-        payload: notification.payload,
+        template: notification.template,
+        data: notification.data || {},
         recipient: []
     };
 };
 
 // EXPORTED
-
-/**
- * Insert JSON-stringified data, notification and extra to the payload.
- * Delete the fields form the notification object.
- * @param {Object} notification
- */
-const preparePayload = function(notification) {
-    notification.payload = {
-        data: JSON.stringify(notification.data),
-        notification: JSON.stringify(notification.notification),
-        extra: JSON.stringify(notification.extra)
-    };
-    delete notification.data;
-    delete notification.notification;
-    delete notification.extra;
-};
 
 /**
  * Fills recipients array for each provider.
@@ -141,7 +129,6 @@ const handleImmediatePushNotificationSend = function(response, context) {
 };
 
 module.exports = {
-    preparePayload,
     distributeRecipients,
     handleImmediatePushNotificationSend
 };
