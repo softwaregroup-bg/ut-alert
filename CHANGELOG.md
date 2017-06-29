@@ -1,3 +1,34 @@
+<a name="5.11.2"></a>
+## [5.11.2](https://github.com/softwaregroup-bg/ut-alert/compare/v5.11.1...v5.11.2) (2017-06-29)
+
+
+### Bug Fixes
+
+* change order of the scripts ([fe4fb89](https://github.com/softwaregroup-bg/ut-alert/commit/fe4fb89))
+
+
+
+<a name="5.11.1"></a>
+## [5.11.1](https://github.com/softwaregroup-bg/ut-alert/compare/v5.11.0...v5.11.1) (2017-06-27)
+
+
+
+<a name="5.11.0"></a>
+# [5.11.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.10.0...v5.11.0) (2017-06-26)
+
+
+### Bug Fixes
+
+* add encryption master key and certificate from configuration ([ad0ac23](https://github.com/softwaregroup-bg/ut-alert/commit/ad0ac23))
+* change because the inserted in table can be more than 1 ([de50082](https://github.com/softwaregroup-bg/ut-alert/commit/de50082))
+
+
+### Features
+
+* add encryption ([2b294af](https://github.com/softwaregroup-bg/ut-alert/commit/2b294af))
+
+
+
 <a name="5.10.0"></a>
 # [5.10.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.9.0...v5.10.0) (2017-06-22)
 
