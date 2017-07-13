@@ -62,52 +62,43 @@ module.exports = {
     },
     /**
      * Sends a push notification. Currently only Google Firebase is supported.
-     * Data in "notification" can be filtered or remapped to another place in the actual call
-     * to the provider, according to provider's documentation.
-     *
-     * msg: {
-     *   immediate: boolean, (defaults to false)
-     *   notification: {
-     *     title: "You have a new Message!",
-     *     body: "Sample description of the notification"
-     *     ...
-     *   },
+     * Sample msg: {
+     *   immediate: boolean, (defaults to false),
+     *   template: 'template.key',
+     *   languageCode: 'en', -- optional, can be inferred by the actorId
      *   data: {
      *     foo: 'foo',
      *     bar: 'bar', ...
-     *   },
-     *   extra: {
-     *     collapse_key: "collapse_key",
-     *     mutable_content: true,
-     *     priority: "normal" | "high",
-     *     time_to_live: 3600
      *   }
      * }
      */
     'push.notification.send': function(msg, $meta) {
         var context = this;
         var config = this.bus.config.alert;
+        var actorId = msg.actorId;
         var userDeviceGetParams = {
-            actorId: msg.actorId,
+            actorId,
             installationId: msg.installationId ? msg.installationId : null
         };
         var notification = {
-            notification: msg.notification ? msg.notification : {},
-            data: msg.data ? msg.data : {},
-            extra: msg.extra ? msg.extra : {},
+            data: msg.data || {},
+            template: msg.template,
+            languageCode: msg.languageCode || null,
             // System info
             immediate: msg.immediate ? msg.immediate : false,
             providerAlertMessageSends: [] // "alert.message.send" msg objects for each supported provider
         };
         // When the user.device.get procedure returns - append the devices array to the notification object.
         var getDevices = (notification) => this.bus.importMethod('user.device.get')(userDeviceGetParams).then(response => {
+            if (!notification.languageCode) {
+                notification.languageCode = response.user.languageCode;
+            }
             notification.devices = response.device.filter(device => {
                 return device.pushNotificationToken !== null;
             });
             return notification;
         });
         var prepareAlertMessageSends = (notification) => {
-            pushHelpers.preparePayload(notification);
             pushHelpers.distributeRecipients(notification, config.push.deviceOSToProvider);
             delete notification.devices;
             return notification;
@@ -131,7 +122,8 @@ module.exports = {
             }
             return pushHelpers.handleImmediatePushNotificationSend(response, context);
         };
-        return getDevices(notification)
+        return Promise.resolve(notification)
+            .then(getDevices)
             .then(prepareAlertMessageSends)
             .then(prepareAlertMessageSendPromises)
             .then(handleAlertMessageSendResponse);
@@ -156,10 +148,9 @@ module.exports = {
         }).then(function(response) {
             return getTemplates(bus, response, channel, languageCode, msg.template);
         }).then(function(templates) {
-            msg.content = getContent(templates, channel, msg.template, msg.data, msg.payload);
+            msg.content = getContent(templates, channel, msg.port, msg.template, msg.data);
             delete msg.template;
             delete msg.data;
-            delete msg.payload;
             $meta.method = 'alert.queueOut.push';
             return bus.importMethod($meta.method)(msg, $meta);
         });
@@ -199,7 +190,7 @@ const getTemplates = (bus, response, channel, languageCode, msgTemplate) => {
     });
 };
 
-const getContent = (templates, channel, msgTemplate, msgData, msgPayload) => {
+const getContent = (templates, channel, port, msgTemplate, msgData) => {
     var templateMap = {};
     var content;
     templates.forEach(function(template) {
@@ -238,12 +229,11 @@ const getContent = (templates, channel, msgTemplate, msgData, msgPayload) => {
             content.html = lodashTemplate(templateMap.emailHtmlTemplate.content)(msgData || {});
         }
     } else if (channel === 'push') {
-        if (!templateMap.hasOwnProperty('pushNotificationTemplate')) {
-            throw errors['alert.templateNotFound'](
-                {helperMessage: `Unable to find entry to itemName corresponding to itemType "pushNotificationTemplate" for template "${msgTemplate}"`}
-            );
+        const templateName = ['pushNotificationTemplate', port].join('.');
+        if (!templateMap.hasOwnProperty(templateName)) {
+            throw errors['alert.templateNotFound']({helperMessage: `Unable to find entry to push notification template ${msgTemplate} for provider ${port}`});
         }
-        content = lodashTemplate(templateMap.pushNotificationTemplate.content)(msgPayload || {});
+        content = lodashTemplate(templateMap[templateName]['content'])(msgData || {});
     } else {
         throw errors['alert.templateNotFound']({helperMessage: `Channel "${channel}" is not supported, yet`});
     }
