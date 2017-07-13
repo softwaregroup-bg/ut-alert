@@ -1,3 +1,13 @@
+<a name="6.0.1"></a>
+## [6.0.1](https://github.com/softwaregroup-bg/ut-alert/compare/v6.0.0...v6.0.1) (2017-07-13)
+
+
+### Bug Fixes
+
+* change the updates to fix history constraints ([8e95859](https://github.com/softwaregroup-bg/ut-alert/commit/8e95859))
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/softwaregroup-bg/ut-alert/compare/v5.11.2...v6.0.0) (2017-06-29)
 
