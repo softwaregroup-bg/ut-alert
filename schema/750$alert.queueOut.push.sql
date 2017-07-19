@@ -31,11 +31,12 @@ BEGIN
 
         UPDATE mOut
         SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT( varbinary, mOut.id)))
-            OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, @content as content, INSERTED.createdBy, INSERTED.createdOn,
-                @statusName as status, INSERTED.priority, INSERTED.messageInId
         FROM @insertedIds
         JOIN [alert].[messageOut] mOut on mOut.id = value
-        
+
+        SELECT id, port, channel, recipient, @content as content, createdBy, createdOn, @statusName as status, priority, messageInId
+        FROM @insertedIds
+        JOIN [alert].[messageOut] mOut on mOut.id = value        
     END TRY
     BEGIN CATCH
          EXEC [core].[error]

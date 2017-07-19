@@ -14,9 +14,16 @@ BEGIN
 
         SELECT 'inserted' resultSetName;
 
+        declare @tmp [alert].[messageInTT]
+
         INSERT INTO [alert].[messageIn](port, channel, sender, content, createdOn, statusId, priority)
         OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.sender, INSERTED.content, INSERTED.createdOn,
                 @statusName as status, INSERTED.priority
+        INTO @tmp(id, port, channel, sender, content, createdOn, statusId, priority)
+
+        select id, port, channel, sender, content, createdOn, statusId as status, priority
+        from @tmp
+
         SELECT @port, @channel, @sender, @content, SYSDATETIMEOFFSET(), @statusId, @priority
     END TRY
     BEGIN CATCH
