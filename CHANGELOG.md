@@ -1,3 +1,14 @@
+<a name="6.0.2"></a>
+## [6.0.2](https://github.com/softwaregroup-bg/ut-alert/compare/v6.0.1...v6.0.2) (2017-07-20)
+
+
+### Bug Fixes
+
+* replace into clause because of the history triggers ([f39f229](https://github.com/softwaregroup-bg/ut-alert/commit/f39f229))
+* replace into clause because of the history triggers ([60e40f7](https://github.com/softwaregroup-bg/ut-alert/commit/60e40f7))
+
+
+
 <a name="6.0.1"></a>
 ## [6.0.1](https://github.com/softwaregroup-bg/ut-alert/compare/v6.0.0...v6.0.1) (2017-07-13)
 
