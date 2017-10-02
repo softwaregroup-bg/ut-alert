@@ -11,7 +11,8 @@ BEGIN TRY
 
     SELECT 'messages' resultSetName;
 
-    OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent
+    declare @sql nvarchar(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
+    exec sp_executesql @sql
 
     UPDATE m
     SET [statusId] =  @statusProcessing

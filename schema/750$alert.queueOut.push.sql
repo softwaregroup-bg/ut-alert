@@ -18,8 +18,8 @@ BEGIN
         
         declare @insertedIds core.arrayNumberList
         -- Open the symmetric key with which to encrypt the data.  
-        OPEN SYMMETRIC KEY MessageOutContent_Key  
-            DECRYPTION BY CERTIFICATE MessageOutContent;  
+        declare @sql nvarchar(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
+        exec sp_executesql @sql
         
 
         SELECT 'inserted' resultSetName;
