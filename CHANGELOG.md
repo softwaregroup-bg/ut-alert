@@ -1,3 +1,13 @@
+<a name="6.0.3"></a>
+## [6.0.3](https://github.com/softwaregroup-bg/ut-alert/compare/v6.0.2...v6.0.3) (2017-10-02)
+
+
+### Bug Fixes
+
+* add opening the key in dynamic sql due to lack of caching ([7a87beb](https://github.com/softwaregroup-bg/ut-alert/commit/7a87beb))
+
+
+
 <a name="6.0.2"></a>
 ## [6.0.2](https://github.com/softwaregroup-bg/ut-alert/compare/v6.0.1...v6.0.2) (2017-07-20)
 
