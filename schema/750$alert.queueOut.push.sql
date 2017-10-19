@@ -1,16 +1,16 @@
 ALTER PROCEDURE [alert].[queueOut.push]
     @port varchar(255),
-    @channel varchar(128),
+    @channel varchar(100),
     @recipient [core].[arrayList] READONLY,
     @content nvarchar(max),
-    @priority int = 0,
+    @priority smallint = 0,
     @messageInId BIGINT = NULL,
     @statusName nvarchar(255) = 'QUEUED',
     @meta [core].[metaDataTT] READONLY
 AS
 BEGIN
     BEGIN TRY
-        DECLARE @statusId int = (select id from [alert].[status] where name = @statusName)
+        DECLARE @statusId tinyint = (select id from [alert].[status] where name = @statusName)
         DECLARE @actorId bigint = (select [auth.actorId] from @meta)
 
 		IF @actorId IS NULL

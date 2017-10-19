@@ -4,9 +4,9 @@ ALTER PROCEDURE [alert].[queueOut.notifyFailure] -- used by port to report failu
     @errorCode nvarchar(64) -- the error code to report
 AS
 BEGIN TRY
-    DECLARE @statusProcessing int = (SELECT id FROM [alert].[status] WHERE [name] = 'PROCESSING')
-    DECLARE @statusFailed int = (SELECT id FROM [alert].[status] WHERE [name] = 'FAILED')
-    DECLARE @messageStatus int;
+    DECLARE @statusProcessing tinyint = (SELECT id FROM [alert].[status] WHERE [name] = 'PROCESSING')
+    DECLARE @statusFailed tinyint = (SELECT id FROM [alert].[status] WHERE [name] = 'FAILED')
+    DECLARE @messageStatus tinyint;
 
     SELECT @messageStatus = [statusId] FROM [alert].[messageOut]
     WHERE [id] = @messageId;

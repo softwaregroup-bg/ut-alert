@@ -3,8 +3,8 @@ ALTER PROCEDURE [alert].[queueOut.pop] -- returns the specified count of message
     @count int -- the number of the messages that should be returned
 AS
 BEGIN TRY
-    DECLARE @statusQueued int = (Select id FROM [alert].[status] WHERE [name] = 'QUEUED')
-    DECLARE @statusProcessing int = (Select id FROM [alert].[status] WHERE [name] = 'PROCESSING')
+    DECLARE @statusQueued tinyint = (Select id FROM [alert].[status] WHERE [name] = 'QUEUED')
+    DECLARE @statusProcessing tinyint = (Select id FROM [alert].[status] WHERE [name] = 'PROCESSING')
     
     DECLARE @messageOut TABLE(id BIGINT, port VARCHAR(255), channel VARCHAR(100), recipient VARCHAR(255), content NVARCHAR(MAX))
     

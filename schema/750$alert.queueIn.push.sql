@@ -1,6 +1,6 @@
 ALTER PROCEDURE [alert].[queueIn.push]
     @port varchar(255),
-    @channel varchar(128),
+    @channel varchar(100),
     @sender nvarchar(255),
     @content nvarchar(max),
     @priority int = 0,
@@ -10,7 +10,7 @@ AS
 BEGIN
     BEGIN TRY
         DECLARE @statusName nvarchar(255) = 'QUEUED'
-        DECLARE @statusId int = (select id from [alert].[status] where name = @statusName)
+        DECLARE @statusId tinyint = (select id from [alert].[status] where name = @statusName)
 
         SELECT 'inserted' resultSetName;
 
