@@ -2,8 +2,8 @@ ALTER PROCEDURE [alert].[queueIn.pop] -- returns the specified count of messages
     @port nvarchar(255)
 AS
 BEGIN TRY
-    DECLARE @statusQueued int = (Select id FROM [alert].[status] WHERE [name] = 'QUEUED')
-    DECLARE @statusProcessing int = (Select id FROM [alert].[status] WHERE [name] = 'PROCESSING')
+    DECLARE @statusQueued tinyint = (Select id FROM [alert].[status] WHERE [name] = 'QUEUED')
+    DECLARE @statusProcessing tinyint = (Select id FROM [alert].[status] WHERE [name] = 'PROCESSING')
 
     DECLARE @messageIn TABLE(id BIGINT, port VARCHAR(255), channel VARCHAR(100), sender VARCHAR(255), content VARCHAR(MAX))
 

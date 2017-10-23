@@ -2,9 +2,9 @@ ALTER PROCEDURE [alert].[queueIn.notifySuccess] -- used by port to report succes
     @messageId int -- the ID of the message to report
 AS
 BEGIN TRY
-    DECLARE @statusProcessing int = (SELECT id FROM [alert].[status] WHERE [name] = 'PROCESSING')
-    DECLARE @statusDelivered int = (SELECT id FROM [alert].[status] WHERE [name] = 'DELIVERED')
-    DECLARE @messageStatus int;
+    DECLARE @statusProcessing tinyint = (SELECT id FROM [alert].[status] WHERE [name] = 'PROCESSING')
+    DECLARE @statusDelivered tinyint = (SELECT id FROM [alert].[status] WHERE [name] = 'DELIVERED')
+    DECLARE @messageStatus tinyint;
 
     SELECT @messageStatus = [statusId] FROM [alert].[messageIn]
     WHERE [id] = @messageId;
