@@ -1,3 +1,13 @@
+<a name="6.0.4"></a>
+## [6.0.4](https://github.com/softwaregroup-bg/ut-alert/compare/v6.0.3...v6.0.4) (2017-10-23)
+
+
+### Bug Fixes
+
+* fix data types, change int variables to tinyint ([d779914](https://github.com/softwaregroup-bg/ut-alert/commit/d779914))
+
+
+
 <a name="6.0.3"></a>
 ## [6.0.3](https://github.com/softwaregroup-bg/ut-alert/compare/v6.0.2...v6.0.3) (2017-10-02)
 
