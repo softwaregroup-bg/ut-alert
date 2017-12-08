@@ -1,6 +1,6 @@
 {
   "name": "ut-alert",
-  "version": "6.1.0-rc-acapulco.0",
+  "version": "6.1.0-rc-acapulco.1",
   "description": "",
   "main": "index.js",
   "peerDependencies": {
