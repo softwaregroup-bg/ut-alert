@@ -1,3 +1,8 @@
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/softwaregroup-bg/ut-alert/compare/v6.1.0-rc-acapulco.1...v6.1.0) (2017-12-13)
+
+
+
 <a name="6.0.4"></a>
 ## [6.0.4](https://github.com/softwaregroup-bg/ut-alert/compare/v6.0.3...v6.0.4) (2017-10-23)
 
