@@ -1,10 +1,12 @@
 {
   "name": "ut-alert",
-  "version": "6.1.0",
+  "version": "6.2.0-rc-bahur.0",
   "description": "",
   "main": "index.js",
   "pkg": {
-    "assets": ["schema/*.sql"]
+    "assets": [
+      "schema/*.sql"
+    ]
   },
   "peerDependencies": {
     "ut-port-sql": "^7.0.0"
