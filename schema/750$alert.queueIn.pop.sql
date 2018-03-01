@@ -1,16 +1,16 @@
 ALTER PROCEDURE [alert].[queueIn.pop] -- returns the specified count of messages ordered by the priority from the biggest to the lowest
-    @port nvarchar(255)
+    @port NVARCHAR(255)
 AS
 BEGIN TRY
-    DECLARE @statusQueued tinyint = (Select id FROM [alert].[status] WHERE [name] = 'QUEUED')
-    DECLARE @statusProcessing tinyint = (Select id FROM [alert].[status] WHERE [name] = 'PROCESSING')
+    DECLARE @statusQueued TINYINT = (SELECT id FROM [alert].[status] WHERE [name] = 'QUEUED')
+    DECLARE @statusProcessing TINYINT = (SELECT id FROM [alert].[status] WHERE [name] = 'PROCESSING')
 
     DECLARE @messageIn TABLE(id BIGINT, port VARCHAR(255), channel VARCHAR(100), sender VARCHAR(255), content VARCHAR(MAX))
 
     SELECT 'messages' resultSetName;
 
     UPDATE m
-    SET [statusId] =  @statusProcessing
+    SET [statusId] = @statusProcessing
     OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.sender, INSERTED.content
     INTO @messageIn (id, port, channel, sender, content)
     FROM
@@ -20,8 +20,8 @@ BEGIN TRY
         WHERE m.[port] = @port AND m.[statusId] = @statusQueued
         ORDER BY m.[priority] DESC
     ) s
-    JOIN [alert].[messageIn] m on s.Id = m.id
-    
+    JOIN [alert].[messageIn] m ON s.Id = m.id
+
     SELECT id, port, channel, sender, content
     FROM @messageIn
 

@@ -12,5 +12,5 @@ USING
     ) AS source ([name])
 ON target.[name] = source.[name]
 WHEN NOT MATCHED BY TARGET THEN
-INSERT ([name])
-VALUES ([name]);
+    INSERT ([name])
+    VALUES ([name]);
