@@ -1,8 +1,13 @@
 {
   "name": "ut-alert",
-  "version": "6.1.0",
+  "version": "6.2.0-rc-bahur.1",
   "description": "",
   "main": "index.js",
+  "pkg": {
+    "assets": [
+      "schema/*.sql"
+    ]
+  },
   "peerDependencies": {
     "ut-port-sql": "^7.0.0"
   },
@@ -13,7 +18,6 @@
     "joi": "10.0.6",
     "lodash.assign": "4.2.0",
     "lodash.template": "4.4.0",
-    "requestretry": "^1.12.0",
     "ut-error": "^5.4.9",
     "when": "3.7.7"
   },
