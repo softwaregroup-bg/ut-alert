@@ -1,6 +1,6 @@
 {
   "name": "ut-alert",
-  "version": "6.2.0-rc-bahur.1",
+  "version": "6.2.0",
   "description": "",
   "main": "index.js",
   "pkg": {
