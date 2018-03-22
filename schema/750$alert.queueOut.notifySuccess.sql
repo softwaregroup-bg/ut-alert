@@ -16,7 +16,7 @@ BEGIN TRY
     IF @messageStatus != @statusProcessing AND @messageStatus != @statusDelivered
         RAISERROR(N'alert.messageInvalidStatus', 16, 1);
 
-    DECLARE @tmpMessage TABLE(messageId bigint, status varchar(20))
+    DECLARE @tmpMessage TABLE(messageId BIGINT, status VARCHAR(20))
 
     SELECT 'updated' resultSetName, 1 single;
 

@@ -11,5 +11,5 @@ AND NOT EXISTS (
 BEGIN
     -- Create a column in which to store the encrypted data.
     ALTER TABLE [alert].[messageOut]
-        ADD content_Encrypted varbinary(max)
+        ADD content_Encrypted VARBINARY(max)
 END

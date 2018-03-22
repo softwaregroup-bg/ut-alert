@@ -25,15 +25,15 @@ BEGIN
 
         INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority, messageInId)
         OUTPUT inserted.id INTO @insertedIds(value)
-        SELECT @port, @channel, LTRIM(RTRIM([value])), CONVERT(varbinary, @content), @actorId, SYSDATETIMEOFFSET(), @statusId, @priority, @messageInId
+        SELECT @port, @channel, LTRIM(RTRIM([value])), CONVERT(VARBINARY, @content), @actorId, SYSDATETIMEOFFSET(), @statusId, @priority, @messageInId
         FROM @recipient
 
         UPDATE mOut
-        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT( varbinary, mOut.id)))
+        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT(VARBINARY, mOut.id)))
         FROM @insertedIds
         JOIN [alert].[messageOut] mOut ON mOut.id = value
 
-        SELECT id, port, channel, recipient, @cONtent AS content, createdBy, createdOn, @statusName AS status, priority, messageInId
+        SELECT id, port, channel, recipient, @content AS content, createdBy, createdOn, @statusName AS status, priority, messageInId
         FROM @insertedIds
         JOIN [alert].[messageOut] mOut ON mOut.id = value
     END TRY

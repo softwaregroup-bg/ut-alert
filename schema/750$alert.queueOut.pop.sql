@@ -16,7 +16,7 @@ BEGIN TRY
 
     UPDATE m
     SET [statusId] = @statusProcessing
-    OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, DecryptByKey(INSERTED.content, 1, HashBytes('SHA1', CONVERT(varbinary, INSERTED.id)))
+    OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, DecryptByKey(INSERTED.content, 1, HashBytes('SHA1', CONVERT(VARBINARY, INSERTED.id)))
     INTO @messageOut (id, port, channel, recipient, content)
     FROM
     (
