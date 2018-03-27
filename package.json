@@ -9,13 +9,13 @@
     ]
   },
   "peerDependencies": {
+    "joi": "^13.1.2",
     "ut-port-sql": "^7.0.0"
   },
   "devDependencies": {
     "ut-tools": "^5.30.0"
   },
   "dependencies": {
-    "joi": "10.0.6",
     "lodash.assign": "4.2.0",
     "lodash.template": "4.4.0",
     "ut-error": "^5.4.9",
