@@ -1,11 +1,11 @@
-DECLARE @itemSmsTemplateId int = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'smsTemplate'),
-    @itemEmailSubjectTemplateId int = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'emailSubjectTemplate'),
-    @itemEmailTextTemplateId int = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'emailTextTemplate'),
-    @itemEmailHtmlTemplateId int = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'emailHtmlTemplate'),
-    @itemPushNotificationTemplateFirebaseId int = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'pushNotificationTemplate.firebase'),
-    @smsChannelId int = (SELECT [id] FROM [alert].[deliveryChannel] WHERE [name] = 'sms'),
-    @emailChannelId int = (SELECT [id] FROM [alert].[deliveryChannel] WHERE [name] = 'email'),
-    @pushNotificationChannelId int = (SELECT [id] FROM [alert].[deliveryChannel] WHERE [name] = 'push');
+DECLARE @itemSmsTemplateId INT = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'smsTemplate'),
+    @itemEmailSubjectTemplateId INT = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'emailSubjectTemplate'),
+    @itemEmailTextTemplateId INT = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'emailTextTemplate'),
+    @itemEmailHtmlTemplateId INT = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'emailHtmlTemplate'),
+    @itemPushNotificationTemplateFirebaseId INT = (SELECT [itemTypeId] FROM [core].[itemType] WHERE [name] = N'pushNotificationTemplate.firebase'),
+    @smsChannelId INT = (SELECT [id] FROM [alert].[deliveryChannel] WHERE [name] = 'sms'),
+    @emailChannelId INT = (SELECT [id] FROM [alert].[deliveryChannel] WHERE [name] = 'email'),
+    @pushNotificationChannelId INT = (SELECT [id] FROM [alert].[deliveryChannel] WHERE [name] = 'push');
 
 IF @itemSmsTemplateId IS NULL
 BEGIN
