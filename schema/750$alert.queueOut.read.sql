@@ -6,7 +6,8 @@ BEGIN TRY
     DECLARE @sql NVARCHAR(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
     EXEC sp_executesql @sql
 
-    SELECT TOP 1 CONVERT(NVARCHAR(1000), DECRYPTBYKEY(m.content, 1 , HASHBYTES('SHA1', CONVERT(VARBINARY, m.id))))
+    SELECT 'message' AS resultSetName
+    SELECT TOP 1 CONVERT(NVARCHAR(1000), DECRYPTBYKEY(m.content, 1 , HASHBYTES('SHA1', CONVERT(VARBINARY, m.id)))) AS 'message'
     FROM alert.messageOut m
     WHERE m.recipient = @recipient
         AND m.statusId = @statusId
