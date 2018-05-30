@@ -1,6 +1,6 @@
 ALTER PROCEDURE [alert].[queueOut.read] -- returns decrypted message to a specified recipient
     @recipient NVARCHAR(255), -- recipient 
-    @statusId INT = 2 -- status o messages (default status is QUEUED)
+    @statusId TINYINT = 2 -- status o messages (default status is QUEUED)
 AS
 BEGIN TRY
     DECLARE @sql NVARCHAR(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
