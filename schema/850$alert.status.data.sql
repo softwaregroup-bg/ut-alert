@@ -9,8 +9,7 @@ USING
         ('CANCELED'),
         ('RESUBMITTED'),
         ('UNAPPROVED')
-    ) AS source ([name])
-ON target.[name] = source.[name]
+    ) AS source ([name]) ON target.[name] = source.[name]
 WHEN NOT MATCHED BY TARGET THEN
-INSERT ([name])
-VALUES ([name]);
+    INSERT ([name])
+    VALUES ([name]);
