@@ -1,10 +1,10 @@
 ALTER PROCEDURE [alert].[queueIn.notifySuccess] -- used by port to report success after sending
-    @messageId int -- the ID of the message to report
+    @messageId INT -- the ID of the message to report
 AS
 BEGIN TRY
-    DECLARE @statusProcessing tinyint = (SELECT id FROM [alert].[status] WHERE [name] = 'PROCESSING')
-    DECLARE @statusDelivered tinyint = (SELECT id FROM [alert].[status] WHERE [name] = 'DELIVERED')
-    DECLARE @messageStatus tinyint;
+    DECLARE @statusProcessing TINYINT = (SELECT id FROM [alert].[status] WHERE [name] = 'PROCESSING')
+    DECLARE @statusDelivered TINYINT = (SELECT id FROM [alert].[status] WHERE [name] = 'DELIVERED')
+    DECLARE @messageStatus TINYINT;
 
     SELECT @messageStatus = [statusId] FROM [alert].[messageIn]
     WHERE [id] = @messageId;
@@ -15,18 +15,18 @@ BEGIN TRY
     IF @messageStatus != @statusProcessing AND @messageStatus != @statusDelivered
         RAISERROR(N'alert.messageInvalidStatus', 16, 1);
 
-    declare @tmpMessage table(messageId bigint, status varchar(20))
+    DECLARE @tmpMessage TABLE(messageId BIGINT, status VARCHAR(20))
 
     SELECT 'updated' resultSetName, 1 single;
 
     UPDATE m
     SET [statusId] = @statusDelivered
-    OUTPUT INSERTED.id as [messageId], 'DELIVERED' as [status]  into @tmpMessage(messageId, status)
+    OUTPUT INSERTED.id AS [messageId], 'DELIVERED' AS [status] INTO @tmpMessage(messageId, status)
     FROM [alert].[messageIn] m
     WHERE m.[id] = @messageId
 
-    select messageId, status
-    from @tmpMessage
+    SELECT messageId, status
+    FROM @tmpMessage
 END TRY
 BEGIN CATCH
     EXEC core.error
