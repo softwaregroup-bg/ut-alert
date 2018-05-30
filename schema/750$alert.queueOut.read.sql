@@ -1,4 +1,4 @@
-ALTER PROCEDURE [alert].[queueOut.read] -- returns decrypted last message to a specified recipient
+ALTER PROCEDURE [alert].[queueOut.read] -- returns decrypted last message for a specified recipient
     @recipient NVARCHAR(255), -- recipient 
     @statusId TINYINT = 2 -- status of messages (default status is QUEUED)
 AS
