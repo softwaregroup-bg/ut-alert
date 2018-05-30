@@ -12,17 +12,27 @@ BEGIN
         DECLARE @statusName NVARCHAR(255) = 'QUEUED'
         DECLARE @statusId TINYINT = (SELECT id FROM [alert].[status] WHERE name = @statusName)
 
-        SELECT 'inserted' resultSetName;
-
         DECLARE @tmp [alert].[messageInTT]
 
-        INSERT INTO [alert].[messageIn](port, channel, sender, content, createdOn, statusId, priority)
-            OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.sender, INSERTED.content,
-                INSERTED.createdOn, @statusName AS status, INSERTED.priority
-            INTO @tmp(id, port, channel, sender, content, createdOn, statusId, priority)
-        SELECT @port, @channel, @sender, @content, SYSDATETIMEOFFSET(), @statusId, @priority
+        INSERT INTO [alert].[messageIn]
+            (port, channel, sender, content, createdOn, statusId, priority)
+        OUTPUT
+            INSERTED.id,
+            INSERTED.port,
+            INSERTED.channel,
+            INSERTED.sender,
+            INSERTED.content,
+            INSERTED.createdOn,
+            INSERTED.statusId,
+            INSERTED.priority
+        INTO @tmp
+            (id, port, channel, sender, content, createdOn, statusId, priority)
+        SELECT
+            @port, @channel, @sender, @content, SYSDATETIMEOFFSET(), @statusId, @priority
 
-        SELECT id, port, channel, sender, content, createdOn, statusId AS status, priority
+        SELECT 'inserted' resultSetName;
+        SELECT
+            id, port, channel, sender, content, createdOn, @statusName AS [status], priority
         FROM @tmp
 
     END TRY
