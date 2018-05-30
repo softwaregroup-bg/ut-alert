@@ -21,6 +21,7 @@ BEGIN
         DECLARE @sql NVARCHAR(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
         EXEC sp_executesql @sql
 
+
         SELECT 'inserted' resultSetName;
 
         INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority, messageInId)
@@ -29,7 +30,7 @@ BEGIN
         FROM @recipient
 
         UPDATE mOut
-        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT(VARBINARY, mOut.id)))
+        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT( VARBINARY, mOut.id)))
         FROM @insertedIds
         JOIN [alert].[messageOut] mOut ON mOut.id = value
 

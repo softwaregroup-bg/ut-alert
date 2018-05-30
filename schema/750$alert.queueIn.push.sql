@@ -17,8 +17,7 @@ BEGIN
         DECLARE @tmp [alert].[messageInTT]
 
         INSERT INTO [alert].[messageIn](port, channel, sender, content, createdOn, statusId, priority)
-            OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.sender, INSERTED.content,
-                INSERTED.createdOn, @statusName AS status, INSERTED.priority
+            OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.sender, INSERTED.content, INSERTED.createdOn, @statusName AS status, INSERTED.priority
             INTO @tmp(id, port, channel, sender, content, createdOn, statusId, priority)
         SELECT @port, @channel, @sender, @content, SYSDATETIMEOFFSET(), @statusId, @priority
 

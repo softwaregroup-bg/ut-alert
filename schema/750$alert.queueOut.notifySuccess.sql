@@ -6,8 +6,7 @@ BEGIN TRY
     DECLARE @statusDelivered TINYINT = (SELECT id FROM [alert].[status] WHERE [name] = 'DELIVERED')
     DECLARE @messageStatus TINYINT;
 
-    SELECT @messageStatus = [statusId]
-    FROM [alert].[messageOut]
+    SELECT @messageStatus = [statusId] FROM [alert].[messageOut]
     WHERE [id] = @messageId;
 
     IF @messageStatus IS NULL
@@ -22,8 +21,7 @@ BEGIN TRY
 
     UPDATE m
     SET [statusId] = @statusDelivered
-    OUTPUT INSERTED.id AS [messageId], 'DELIVERED' AS [status]
-    INTO @tmpMessage(messageId, status)
+    OUTPUT INSERTED.id AS [messageId], 'DELIVERED' AS [status] INTO @tmpMessage(messageId, status)
     FROM [alert].[messageOut] m
     WHERE m.[id] = @messageId;
 

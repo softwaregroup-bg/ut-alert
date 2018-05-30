@@ -8,15 +8,14 @@ BEGIN TRY
 
     DECLARE @messageOut TABLE(id BIGINT, port VARCHAR(255), channel VARCHAR(100), recipient VARCHAR(255), content NVARCHAR(MAX))
 
-
     SELECT 'messages' resultSetName;
 
-    DECLARE @sql NVARCHAR(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
+    DECLARE @sql nvarchar(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
     EXEC sp_executesql @sql
 
     UPDATE m
     SET [statusId] = @statusProcessing
-    OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, DecryptByKey(INSERTED.content, 1, HashBytes('SHA1', CONVERT(VARBINARY, INSERTED.id)))
+    OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.recipient, DecryptByKey(INSERTED.content, 1 , HashBytes('SHA1', CONVERT(VARBINARY, INSERTED.id)))
     INTO @messageOut (id, port, channel, recipient, content)
     FROM
     (

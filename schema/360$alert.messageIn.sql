@@ -1,4 +1,5 @@
-CREATE TABLE [alert].[messageIn] ( -- table that stores all the messages that are generated for send
+CREATE TABLE [alert].[messageIn] -- table that stores all the messages that are generated for send
+(
     [id] BIGINT IDENTITY(1, 1) NOT NULL, -- the PK of the table
     [port] VARCHAR(255) NOT NULL, -- implementation dependant
     [channel] VARCHAR(100) NOT NULL, -- channel is by what the message should be sent, for example "email", "sms"

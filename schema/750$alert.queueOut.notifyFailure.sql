@@ -24,8 +24,7 @@ BEGIN TRY
 
     UPDATE m
     SET [statusId] = @statusFailed
-    OUTPUT INSERTED.id AS [messageId], 'FAILED' AS [status]
-    INTO @tmpMessage(messageId, status)
+    OUTPUT INSERTED.id AS [messageId], 'FAILED' AS [status] INTO @tmpMessage(messageId, status)
     FROM [alert].[messageOut] m
     WHERE m.[id] = @messageId;
 

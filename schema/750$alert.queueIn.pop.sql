@@ -10,14 +10,15 @@ BEGIN TRY
     SELECT 'messages' resultSetName;
 
     UPDATE m
-    SET [statusId] = @statusProcessing
+        SET [statusId] = @statusProcessing
     OUTPUT INSERTED.id, INSERTED.port, INSERTED.channel, INSERTED.sender, INSERTED.content
     INTO @messageIn (id, port, channel, sender, content)
     FROM
     (
         SELECT TOP 1 [id]
         FROM [alert].[messageIn] m
-        WHERE m.[port] = @port AND m.[statusId] = @statusQueued
+        WHERE m.[port] = @port
+            AND m.[statusId] = @statusQueued
         ORDER BY m.[priority] DESC
     ) s
     JOIN [alert].[messageIn] m ON s.Id = m.id
