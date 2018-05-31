@@ -1,10 +1,12 @@
-IF EXISTS (
+IF EXISTS
+(
     SELECT *
     FROM sys.columns c
     JOIN sys.types y ON y.system_type_id = c.system_type_id
     WHERE c.Name = 'content_Encrypted'
         AND Object_ID = OBJECT_ID(N'alert.messageIn')
-        AND y.name = 'varbinary')
+        AND y.name = 'varbinary'
+)
 BEGIN
     -- Open the symmetric key with which to encrypt the data.
     OPEN SYMMETRIC KEY MessageOutContent_Key

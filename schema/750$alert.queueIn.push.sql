@@ -37,7 +37,7 @@ BEGIN
         SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT(VARBINARY, messIn.id)))
         FROM @tmp t
         JOIN [alert].[messageIn] messIn ON messIn.id = t.id
-        
+
         SELECT 'inserted' resultSetName;
         SELECT
             id, port, channel, sender, @content AS content, createdOn, @statusName AS [status], priority
