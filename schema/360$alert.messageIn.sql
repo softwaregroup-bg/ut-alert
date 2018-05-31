@@ -3,7 +3,7 @@ CREATE TABLE [alert].[messageIn] ( -- table that stores all the messages that ar
     [port] VARCHAR(255) NOT NULL, -- implementation dependant
     [channel] VARCHAR(100) NOT NULL, -- channel is by what the message should be sent, for example "email", "sms"
     [sender] NVARCHAR(255) NOT NULL, -- the number or the email address of the sender
-    [content] NVARCHAR(MAX) NOT NULL, -- the message content
+    [content] VARBINARY(MAX) NOT NULL, -- the message content,
     [createdOn] DATETIMEOFFSET(7) NOT NULL, -- when the message is created
     [statusId] TINYINT NOT NULL, -- the status of the message
     [priority] SMALLINT NOT NULL, -- the priority of the message

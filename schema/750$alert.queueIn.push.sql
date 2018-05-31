@@ -13,28 +13,35 @@ BEGIN
         DECLARE @statusId TINYINT = (SELECT id FROM [alert].[status] WHERE name = @statusName)
 
         DECLARE @tmp [alert].[messageInTT]
+        -- Open the symmetric key with which to encrypt the data.
+        DECLARE @sql NVARCHAR(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
+        EXEC sp_executesql @sql
 
         INSERT INTO [alert].[messageIn]
             (port, channel, sender, content, createdOn, statusId, priority)
         OUTPUT
-            INSERTED.id,
-            INSERTED.port,
-            INSERTED.channel,
-            INSERTED.sender,
-            INSERTED.content,
-            INSERTED.createdOn,
-            INSERTED.statusId,
-            INSERTED.priority
+            inserted.id,
+            inserted.port,
+            inserted.channel,
+            inserted.sender,
+            inserted.content,
+            inserted.createdOn,
+            inserted.statusId,
+            inserted.priority
         INTO @tmp
             (id, port, channel, sender, content, createdOn, statusId, priority)
         SELECT
-            @port, @channel, @sender, @content, SYSDATETIMEOFFSET(), @statusId, @priority
+            @port, @channel, @sender, CONVERT(VARBINARY, @content), SYSDATETIMEOFFSET(), @statusId, @priority
 
+        UPDATE messIn
+        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT(VARBINARY, messIn.id)))
+        FROM @tmp t
+        JOIN [alert].[messageIn] messIn ON messIn.id = t.id
+        
         SELECT 'inserted' resultSetName;
         SELECT
-            id, port, channel, sender, content, createdOn, @statusName AS [status], priority
+            id, port, channel, sender, @content AS content, createdOn, @statusName AS [status], priority
         FROM @tmp
-
     END TRY
     BEGIN CATCH
         EXEC [core].[error]
