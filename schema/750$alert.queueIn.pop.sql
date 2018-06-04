@@ -18,7 +18,8 @@ BEGIN TRY
     (
         SELECT TOP 1 [id]
         FROM [alert].[messageIn] m
-        WHERE m.[port] = @port AND m.[statusId] = @statusQueued
+        WHERE m.[port] = @port
+            AND m.[statusId] = @statusQueued
         ORDER BY m.[priority] DESC
     ) s
     JOIN [alert].[messageIn] m ON s.Id = m.id
