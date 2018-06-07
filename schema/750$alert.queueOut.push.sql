@@ -1,44 +1,43 @@
 ALTER PROCEDURE [alert].[queueOut.push]
-    @port varchar(255),
-    @channel varchar(100),
+    @port VARCHAR(255),
+    @channel VARCHAR(100),
     @recipient [core].[arrayList] READONLY,
-    @content nvarchar(max),
-    @priority smallint = 0,
+    @content NVARCHAR(MAX),
+    @priority SMALLINT = 0,
     @messageInId BIGINT = NULL,
-    @statusName nvarchar(255) = 'QUEUED',
+    @statusName NVARCHAR(255) = 'QUEUED',
     @meta [core].[metaDataTT] READONLY
 AS
 BEGIN
     BEGIN TRY
-        DECLARE @statusId tinyint = (select id from [alert].[status] where name = @statusName)
-        DECLARE @actorId bigint = (select [auth.actorId] from @meta)
+        DECLARE @statusId TINYINT = (SELECT id FROM [alert].[status] WHERE name = @statusName)
+        DECLARE @actorId BIGINT = (SELECT [auth.actorId] FROM @meta)
 
-		IF @actorId IS NULL
-			RAISERROR(N'alert.missingCreatorId', 16, 1);
-        
-        declare @insertedIds core.arrayNumberList
-        -- Open the symmetric key with which to encrypt the data.  
-        declare @sql nvarchar(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
-        exec sp_executesql @sql
-        
+        IF @actorId IS NULL
+            RAISERROR(N'alert.missingCreatorId', 16, 1);
+
+        DECLARE @insertedIds core.arrayNumberList
+        -- Open the symmetric key with which to encrypt the data.
+        DECLARE @sql NVARCHAR(2000) = 'OPEN SYMMETRIC KEY MessageOutContent_Key DECRYPTION BY CERTIFICATE MessageOutContent'
+        EXEC sp_executesql @sql
 
         SELECT 'inserted' resultSetName;
 
-        INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority, messageInId)       
-        OUTPUT inserted.id into @insertedIds(value)
-        SELECT @port, @channel, LTRIM(RTRIM([value])), convert(varbinary, @content), @actorId, SYSDATETIMEOFFSET(), @statusId, @priority, @messageInId
+        INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority, messageInId)
+        OUTPUT inserted.id INTO @insertedIds(value)
+        SELECT @port, @channel, LTRIM(RTRIM([value])), CONVERT(VARBINARY, @content), @actorId, SYSDATETIMEOFFSET(), @statusId, @priority, @messageInId
         FROM @recipient
 
         UPDATE mOut
-        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT( varbinary, mOut.id)))
+        SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT(VARBINARY, mOut.id)))
         FROM @insertedIds
-        JOIN [alert].[messageOut] mOut on mOut.id = value
+        JOIN [alert].[messageOut] mOut ON mOut.id = value
 
-        SELECT id, port, channel, recipient, @content as content, createdBy, createdOn, @statusName as status, priority, messageInId
+        SELECT id, port, channel, recipient, @content AS content, createdBy, createdOn, @statusName AS status, priority, messageInId
         FROM @insertedIds
-        JOIN [alert].[messageOut] mOut on mOut.id = value        
+        JOIN [alert].[messageOut] mOut ON mOut.id = value
     END TRY
     BEGIN CATCH
-         EXEC [core].[error]
+        EXEC [core].[error]
     END CATCH
 END
