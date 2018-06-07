@@ -1,3 +1,8 @@
+<a name="6.4.0"></a>
+# [6.4.0](https://github.com/softwaregroup-bg/ut-alert/compare/v6.4.0-rc-diesel.4...v6.4.0) (2018-06-07)
+
+
+
 <a name="6.3.0"></a>
 # [6.3.0](https://github.com/softwaregroup-bg/ut-alert/compare/v6.2.0...v6.3.0) (2018-04-17)
 
