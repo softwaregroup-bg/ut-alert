@@ -1,3 +1,8 @@
+<a name="6.5.0"></a>
+# [6.5.0](https://github.com/softwaregroup-bg/ut-alert/compare/v6.5.0-rc-einstein.1...v6.5.0) (2018-08-02)
+
+
+
 <a name="6.4.0"></a>
 # [6.4.0](https://github.com/softwaregroup-bg/ut-alert/compare/v6.4.0-rc-diesel.4...v6.4.0) (2018-06-07)
 
