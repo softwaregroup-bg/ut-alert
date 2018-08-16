@@ -1,4 +1,4 @@
-CREATE TABLE [alert].[deliveryChannelItemType] -- Connects a channel to one or more item (translatable templates) types in the core module. 
+CREATE TABLE [alert].[deliveryChannelItemType] -- Connects a channel to one or more item (translatable templates) types in the core module.
 (
     [channelId] INT NOT NULL, -- References to channel
     [itemTypeId] INT NOT NULL, -- Reference to item type
