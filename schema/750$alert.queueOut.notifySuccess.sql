@@ -18,7 +18,7 @@ BEGIN TRY
     SELECT 'updated' resultSetName, 1 single;
 
     UPDATE m
-    SET [statusId] = @statusDelivered
+    SET [statusId] = @statusDelivered, [modifiedOn] = GETDATE()
     OUTPUT INSERTED.id as [messageId], 'DELIVERED' as [status]
     FROM [alert].[messageOut] m
     WHERE m.[id] = @messageId;

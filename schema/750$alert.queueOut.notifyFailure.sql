@@ -20,7 +20,7 @@ BEGIN TRY
     SELECT 'updated' resultSetName, 1 single;
 
     UPDATE m
-    SET [statusId] = @statusFailed
+    SET [statusId] = @statusFailed, [modifiedOn] = GETDATE()
     OUTPUT INSERTED.id as [messageId], 'FAILED' as [status]
     FROM [alert].[messageOut] m
     WHERE m.[id] = @messageId;

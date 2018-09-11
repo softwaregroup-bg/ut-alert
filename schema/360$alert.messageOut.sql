@@ -6,6 +6,7 @@ CREATE TABLE [alert].[messageOut] ( -- table that stores all the messages that a
     [content] varbinary(max) not null,  -- the message content
     [createdBy] bigint not null, -- the user that created the message
     [createdOn] datetimeoffset(7) not null, -- when the message is created
+    [modifiedOn] datetimeoffset(7) null, -- update when message is delivered
     [statusId] tinyint not null, -- the status of the message
     [priority] smallint not null, -- the priority of the message
     [messageInId] bigint null, -- in/out cross reference
