@@ -2,7 +2,7 @@ const path = require('path');
 const lodashTemplate = require('lodash.template');
 const pushHelpers = require('../../helpers/push');
 
-const methods = findChannel => ({
+const methods = ({findChannel}) => ({
     schema: [{path: path.join(__dirname, '/schema'), linkSP: true}],
     start: function() {
         Object.assign(this.errors, this.errors.fetchErrors('alert'));
