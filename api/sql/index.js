@@ -1,17 +1,45 @@
-var path = require('path');
-var lodashTemplate = require('lodash.template');
-var errors = require('../../errors');
-var findChannel = require('../../helpers/findChannel');
-var pushHelpers = require('../../helpers/push');
+const path = require('path');
+const lodashTemplate = require('lodash.template');
+const pushHelpers = require('../../helpers/push');
 
-module.exports = {
+const methods = findChannel => ({
     schema: [{path: path.join(__dirname, '/schema'), linkSP: true}],
-    'queueOut.push.request.send': require('../../hooks/queueOut.push').send,
-    'queueOut.push.response.receive': require('../../hooks/queueOut.push').receive,
-    'queueOut.pop.request.send': require('../../hooks/queueOut.pop').send,
-    'queueOut.pop.response.receive': require('../../hooks/queueOut.pop').receive,
-    'queueIn.pop.request.send': require('../../hooks/queueIn.pop').send,
-    'queueIn.pop.response.receive': require('../../hooks/queueIn.pop').receive,
+    start: function() {
+        Object.assign(this.errors, this.errors.fetchErrors('alert'));
+    },
+    'queueOut.push.request.send': function(msg) {
+        msg.channel = findChannel(this.errors, msg);
+        if (msg.channel === 'email') {
+            msg.content = JSON.stringify(msg.content);
+        }
+        return msg;
+    },
+    'queueOut.push.response.receive': function(msg) {
+        if (msg.channel === 'email') {
+            msg.content = JSON.parse(msg.content);
+        }
+        return msg;
+    },
+    'queueOut.pop.request.send': function(msg) {
+        msg.channel = findChannel(this.errors, msg);
+        return msg;
+    },
+    'queueOut.pop.response.receive': function(msg) {
+        if (msg.channel === 'email') {
+            msg.content = JSON.parse(msg.content);
+        }
+        return msg;
+    },
+    'queueIn.pop.request.send': function(msg) {
+        msg.channel = findChannel(this.errors, msg);
+        return msg;
+    },
+    'queueIn.pop.response.receive': function(msg, $meta) {
+        if (msg.channel === 'email') {
+            msg.content = JSON.parse(msg.content);
+        }
+        return msg;
+    },
     /**
      * Internal methods for handling success and failure of sending a push notification.
      * These are called either by the [alert.push.notification.send] or by a cron in the implementations
@@ -73,7 +101,6 @@ module.exports = {
      * }
      */
     'push.notification.send': function(msg, $meta) {
-        var context = this;
         var config = this.bus.config.alert;
         var actorId = msg.actorId;
         var userDeviceGetParams = {
@@ -111,7 +138,7 @@ module.exports = {
                 }
                 delete alertMessageSend.immediate;
                 $meta.method = 'alert.message.send';
-                alertMessageSendPromises.push(context.config[$meta.method](alertMessageSend, $meta));
+                alertMessageSendPromises.push(this.config[$meta.method](alertMessageSend, $meta));
             });
             return Promise.all(alertMessageSendPromises);
         };
@@ -120,7 +147,7 @@ module.exports = {
             if (!response.length) {
                 return response;
             }
-            return pushHelpers.handleImmediatePushNotificationSend(response, context);
+            return pushHelpers.handleImmediatePushNotificationSend(response, this);
         };
         return Promise.resolve(notification)
             .then(getDevices)
@@ -136,28 +163,27 @@ module.exports = {
             if (!languageCode) {
                 languageCode = bus.config.defaultLanguage;
                 if (!languageCode) {
-                    throw errors['alert.templateNotFound']({helperMessage: 'Language code is not specified'});
+                    throw this.errors['alert.templateNotFound']({helperMessage: 'Language code is not specified'});
                 }
             }
         }
-        var channel = findChannel.call(this, msg.port);
+        var channel = findChannel(this.errors, msg);
         return bus.importMethod('alert.template.fetch')({
             channel: channel,
             name: msg.template,
             languageCode: languageCode
-        }).then(function(response) {
-            return getTemplates(bus, response, channel, languageCode, msg.template);
-        }).then(function(templates) {
-            msg.content = getContent(templates, channel, msg.port, msg.template, msg.data);
+        }).then(response => {
+            return getTemplates(this.errors, bus, response, channel, languageCode, msg.template);
+        }).then(templates => {
+            msg.content = getContent(this.errors, templates, channel, msg.port, msg.template, msg.data);
             delete msg.template;
             delete msg.data;
-            $meta.method = 'alert.queueOut.push';
-            return bus.importMethod($meta.method)(msg, $meta);
+            return bus.importMethod('alert.queueOut.push')(msg, $meta);
         });
     }
-};
+});
 
-const getTemplates = (bus, response, channel, languageCode, msgTemplate) => {
+const getTemplates = (errors, bus, response, channel, languageCode, msgTemplate) => {
     if (Array.isArray(response.templates) && response.templates.length > 0) {
         return response.templates;
     }
@@ -166,7 +192,7 @@ const getTemplates = (bus, response, channel, languageCode, msgTemplate) => {
             channel: channel,
             name: msgTemplate,
             languageCode: bus.config.defaultLanguage
-        }).then(function(response) {
+        }).then(response => {
             if (Array.isArray(response.templates) && response.templates.length > 0) {
                 return response.templates;
             }
@@ -190,10 +216,10 @@ const getTemplates = (bus, response, channel, languageCode, msgTemplate) => {
     });
 };
 
-const getContent = (templates, channel, port, msgTemplate, msgData) => {
+const getContent = (errors, templates, channel, port, msgTemplate, msgData) => {
     var templateMap = {};
     var content;
-    templates.forEach(function(template) {
+    templates.forEach(template => {
         templateMap[template.type] = template;
     });
     // TODO: Find a better way to generate a content without iteration by channels.
@@ -239,3 +265,13 @@ const getContent = (templates, channel, port, msgTemplate, msgData) => {
     }
     return content;
 };
+
+module.exports = ({ports} = {}) => methods({
+    findChannel: (errors, msg) => {
+        if (!ports) throw errors['alert.portsNotFound']();
+        if (!ports[msg.port]) throw errors['alert.portNotFound']({params: {port: msg.port}});
+        var channel = ports[msg.port].channel;
+        if (!channel) throw errors['alert.channelNotFound']({params: {port: msg.port}});
+        return channel;
+    }
+});

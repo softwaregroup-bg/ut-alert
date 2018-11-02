@@ -9,7 +9,6 @@
     ]
   },
   "peerDependencies": {
-    "ut-error": "^5.4.9",
     "ut-port-sql": "^7.0.0"
   },
   "devDependencies": {
