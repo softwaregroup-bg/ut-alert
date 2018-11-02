@@ -7,6 +7,6 @@ module.exports = function utAlert() {
         validations: {
             alert: require('./validations')
         },
-        error: require('./errors')
+        errors: require('./errors')
     };
 };
