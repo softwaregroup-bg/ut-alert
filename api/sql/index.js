@@ -2,7 +2,7 @@ const path = require('path');
 const lodashTemplate = require('lodash.template');
 const pushHelpers = require('../../helpers/push');
 
-const methods = ({findChannel}) => ({
+const methods = ({findChannel, deviceOSToProvider}) => ({
     schema: [{path: path.join(__dirname, '/schema'), linkSP: true}],
     start: function() {
         Object.assign(this.errors, this.errors.fetchErrors('alert'));
@@ -101,7 +101,6 @@ const methods = ({findChannel}) => ({
      * }
      */
     'push.notification.send': function(msg, $meta) {
-        var config = this.bus.config.alert;
         var actorId = msg.actorId;
         var userDeviceGetParams = {
             actorId,
@@ -126,7 +125,7 @@ const methods = ({findChannel}) => ({
             return notification;
         });
         var prepareAlertMessageSends = (notification) => {
-            pushHelpers.distributeRecipients(notification, config.push.deviceOSToProvider);
+            pushHelpers.distributeRecipients(notification, deviceOSToProvider);
             delete notification.devices;
             return notification;
         };
@@ -266,7 +265,8 @@ const getContent = (errors, templates, channel, port, msgTemplate, msgData) => {
     return content;
 };
 
-module.exports = ({ports} = {}) => methods({
+module.exports = ({ports, deviceOSToProvider} = {}) => methods({
+    deviceOSToProvider,
     findChannel: (errors, msg) => {
         if (!ports) throw errors['alert.portsNotFound']();
         if (!ports[msg.port]) throw errors['alert.portNotFound']({params: {port: msg.port}});
