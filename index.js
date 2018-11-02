@@ -1,4 +1,4 @@
-module.exports = function utUser() {
+module.exports = function utAlert() {
     return {
         ports: [],
         modules: {

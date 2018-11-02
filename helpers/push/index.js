@@ -1,5 +1,3 @@
-const errors = require('../../errors');
-
 // PRIVATE
 
 /**
@@ -63,7 +61,7 @@ const distributeRecipients = function(notification, osToProviderMap) {
  * @param {Array} response - array of providers, containing results of alert.message.send
  * @param {Object} context - the Port (bus, config...)
  */
-const handleImmediatePushNotificationSend = function(response, context) {
+const handleImmediatePushNotificationSend = function(response, port) {
     var insertedRowsForImmediateProcessing = [];
     response.forEach(providerResponse => {
         const inserted = providerResponse.inserted; // inserted - this is the result of alert.message.send
@@ -81,12 +79,12 @@ const handleImmediatePushNotificationSend = function(response, context) {
     // Initialize an array, that will containe send promises.
     var getRecipientPushNotificationToken = (insertedRow) => {
         var recipient = JSON.parse(insertedRow.recipient);
-        return context.bus.importMethod('user.device.get')({
+        return port.bus.importMethod('user.device.get')({
             actorId: recipient.actorId,
             installationId: recipient.installationId
         }).then(userDeviceResult => {
             if (!userDeviceResult.device.length || userDeviceResult.device.length > 1) {
-                throw errors['alert.push.ambiguousResultForActorDevice']();
+                throw port.errors['alert.ambiguousResultForActorDevice']();
             }
             return userDeviceResult.device[0].pushNotificationToken;
         });
@@ -100,17 +98,17 @@ const handleImmediatePushNotificationSend = function(response, context) {
     };
     var handleSuccess = (message) => (sendResponse) => {
         message.status = 'DELIVERED';
-        return context.config['alert.push.notification.handleSuccess']({ message, sendResponse });
+        return port.config['alert.push.notification.handleSuccess']({ message, sendResponse });
     };
     var handleFailure = (message) => (errorResponse) => {
         message.status = 'FAILED';
-        return context.config['alert.push.notification.handleFailure']({ message, errorResponse });
+        return port.config['alert.push.notification.handleFailure']({ message, errorResponse });
     };
     // Define similar function for each provider.
-    var dispatchToFirebase = (fcmMessage) => context.bus.importMethod('firebase.fcm.send')(fcmMessage);
+    var dispatchToFirebase = (fcmMessage) => port.bus.importMethod('firebase.fcm.send')(fcmMessage);
     if (insertedRowsForImmediateProcessing.length) {
         var sendNotificationPromises = [];
-        var dispatchToProvderPort = () => Promise.reject(errors['alert.push.providerNotImplemented']()); // Default - reject with no support.
+        var dispatchToProvderPort = () => Promise.reject(port.errors['alert.providerNotImplemented']()); // Default - reject with no support.
         insertedRowsForImmediateProcessing.forEach(insertedRow => {
             if (insertedRow.port === 'firebase') {
                 dispatchToProvderPort = dispatchToFirebase;
