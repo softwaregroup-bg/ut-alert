@@ -9,7 +9,8 @@
     ]
   },
   "peerDependencies": {
-    "ut-port-sql": "^7.0.0"
+    "ut-port-sql": "^7.0.0",
+    "ut-run": "^9.8.0-rc-godfather.9"
   },
   "devDependencies": {
     "ut-tools": "^6.4.2"

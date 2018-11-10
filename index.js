@@ -1,12 +1,26 @@
-module.exports = function utAlert() {
-    return {
-        ports: [],
-        modules: {
-            alert: require('./api/sql')
+module.exports = () => function utAlert() {
+    return [
+        function adapter() {
+            return {
+                modules: {
+                    'db/alert': require('./api/sql/schema')
+                },
+                errors: require('./errors')
+            };
         },
-        validations: {
-            alert: require('./validations')
+        function orchestrator() {
+            return {
+                ports: [
+                    require('ut-dispatch-db')(['alert'])
+                ]
+            };
         },
-        errors: require('./errors')
-    };
+        function gateway() {
+            return {
+                validations: {
+                    alert: require('./validations')
+                }
+            };
+        }
+    ];
 };
