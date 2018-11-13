@@ -5,7 +5,7 @@
   "main": "index.js",
   "pkg": {
     "assets": [
-      "schema/*.sql"
+      "api/sql/schema/*.sql"
     ]
   },
   "peerDependencies": {
