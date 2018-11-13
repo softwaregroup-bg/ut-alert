@@ -3,6 +3,7 @@ module.exports = () => function utAlert() {
         function adapter() {
             return {
                 modules: {
+                    alertSeed: require('./api/sql/seed'),
                     'db/alert': require('./api/sql/schema')
                 },
                 errors: require('./errors')
