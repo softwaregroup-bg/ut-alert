@@ -265,13 +265,15 @@ const getContent = (errors, templates, channel, port, msgTemplate, msgData) => {
     return content;
 };
 
-module.exports = ({ports, deviceOSToProvider} = {}) => methods({
-    deviceOSToProvider,
-    findChannel: (errors, msg) => {
-        if (!ports) throw errors['alert.portsNotFound']();
-        if (!ports[msg.port]) throw errors['alert.portNotFound']({params: {port: msg.port}});
-        var channel = ports[msg.port].channel;
-        if (!channel) throw errors['alert.channelNotFound']({params: {port: msg.port}});
-        return channel;
-    }
-});
+module.exports = function sql({ports, deviceOSToProvider} = {}) {
+    return methods({
+        deviceOSToProvider,
+        findChannel: (errors, msg) => {
+            if (!ports) throw errors['alert.portsNotFound']();
+            if (!ports[msg.port]) throw errors['alert.portNotFound']({params: {port: msg.port}});
+            var channel = ports[msg.port].channel;
+            if (!channel) throw errors['alert.channelNotFound']({params: {port: msg.port}});
+            return channel;
+        }
+    });
+};

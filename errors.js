@@ -1,4 +1,4 @@
-module.exports = ({defineError, getError, fetchErrors}) => {
+module.exports = function error({utError: {defineError, getError, fetchErrors}}) {
     if (!getError('alert')) {
         let Alert = defineError('alert', undefined, 'ut-alert error');
         defineError('ambiguousResultForActorDevice', Alert, 'Zero or more than one device returned for an actorId & installationId!');
