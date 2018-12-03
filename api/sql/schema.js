@@ -265,7 +265,7 @@ const getContent = (errors, templates, channel, port, msgTemplate, msgData) => {
     return content;
 };
 
-module.exports = function sql({config: {ports, deviceOSToProvider}}) {
+module.exports = function sql({config: {ports, deviceOSToProvider}} = {config: {}}) {
     return methods({
         deviceOSToProvider,
         findChannel: (errors, msg) => {
