@@ -7,34 +7,34 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
     start: function() {
         Object.assign(this.errors, this.errors.fetchErrors('alert'));
     },
-    'queueOut.push.request.send': function(msg) {
+    'alert.queueOut.push.request.send': function(msg) {
         msg.channel = findChannel(this.errors, msg);
         if (msg.channel === 'email') {
             msg.content = JSON.stringify(msg.content);
         }
         return msg;
     },
-    'queueOut.push.response.receive': function(msg) {
+    'alert.queueOut.push.response.receive': function(msg) {
         if (msg.channel === 'email') {
             msg.content = JSON.parse(msg.content);
         }
         return msg;
     },
-    'queueOut.pop.request.send': function(msg) {
+    'alert.queueOut.pop.request.send': function(msg) {
         msg.channel = findChannel(this.errors, msg);
         return msg;
     },
-    'queueOut.pop.response.receive': function(msg) {
+    'alert.queueOut.pop.response.receive': function(msg) {
         if (msg.channel === 'email') {
             msg.content = JSON.parse(msg.content);
         }
         return msg;
     },
-    'queueIn.pop.request.send': function(msg) {
+    'alert.queueIn.pop.request.send': function(msg) {
         msg.channel = findChannel(this.errors, msg);
         return msg;
     },
-    'queueIn.pop.response.receive': function(msg, $meta) {
+    'alert.queueIn.pop.response.receive': function(msg, $meta) {
         if (msg.channel === 'email') {
             msg.content = JSON.parse(msg.content);
         }
@@ -45,7 +45,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
      * These are called either by the [alert.push.notification.send] or by a cron in the implementations
      * after the sending has finished and a response has been received by the provider.
      */
-    'push.notification.handleSuccess': function(msg, $meta) {
+    'alert.push.notification.handleSuccess': function(msg, $meta) {
         var { message, sendResponse } = msg; // message is the inserted row of alert.queueOut.push
         var { actorId, installationId } = JSON.parse(message.recipient);
         var updatePushNotificationToken = (updatedPushNotificationToken, actorId, installationId) => this.bus.importMethod('user.device.update')({
@@ -66,7 +66,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
             return notifySuccess();
         }
     },
-    'push.notification.handleFailure': function(msg, $meta) {
+    'alert.push.notification.handleFailure': function(msg, $meta) {
         var { message, errorResponse } = msg; // message is the inserted row of alert.queueOut.push
         var { actorId, installationId } = JSON.parse(message.recipient);
         var removePushNotificationToken = (actorId, installationId) => this.bus.importMethod('user.device.update')({
@@ -100,7 +100,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
      *   }
      * }
      */
-    'push.notification.send': function(msg, $meta) {
+    'alert.push.notification.send': function(msg, $meta) {
         var actorId = msg.actorId;
         var userDeviceGetParams = {
             actorId,
@@ -154,7 +154,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
             .then(prepareAlertMessageSendPromises)
             .then(handleAlertMessageSendResponse);
     },
-    'message.send': function(msg, $meta) {
+    'alert.message.send': function(msg, $meta) {
         var bus = this.bus;
         var languageCode = msg.languageCode;
         if (!languageCode) {
@@ -265,13 +265,15 @@ const getContent = (errors, templates, channel, port, msgTemplate, msgData) => {
     return content;
 };
 
-module.exports = ({ports, deviceOSToProvider} = {}) => methods({
-    deviceOSToProvider,
-    findChannel: (errors, msg) => {
-        if (!ports) throw errors['alert.portsNotFound']();
-        if (!ports[msg.port]) throw errors['alert.portNotFound']({params: {port: msg.port}});
-        var channel = ports[msg.port].channel;
-        if (!channel) throw errors['alert.channelNotFound']({params: {port: msg.port}});
-        return channel;
-    }
-});
+module.exports = function sql({config: {ports, deviceOSToProvider}} = {config: {}}) {
+    return methods({
+        deviceOSToProvider,
+        findChannel: (errors, msg) => {
+            if (!ports) throw errors['alert.portsNotFound']();
+            if (!ports[msg.port]) throw errors['alert.portNotFound']({params: {port: msg.port}});
+            var channel = ports[msg.port].channel;
+            if (!channel) throw errors['alert.channelNotFound']({params: {port: msg.port}});
+            return channel;
+        }
+    });
+};
