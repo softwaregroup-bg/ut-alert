@@ -3,6 +3,7 @@
   "version": "6.6.0-rc-godfather.8",
   "description": "",
   "main": "index.js",
+  "browser": "browser.js",
   "pkg": {
     "assets": [
       "api/sql/**/*.sql"
