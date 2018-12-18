@@ -1,6 +1,6 @@
 {
   "name": "ut-alert",
-  "version": "6.6.0-rc-godfather.8",
+  "version": "6.6.0-rc-godfather.9",
   "description": "",
   "main": "index.js",
   "browser": "browser.js",
