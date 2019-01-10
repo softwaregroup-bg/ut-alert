@@ -38,6 +38,9 @@ BEGIN
         JOIN [alert].[messageOut] mOut ON mOut.id = value
     END TRY
     BEGIN CATCH
-        EXEC [core].[error]
+        IF @@trancount > 0
+            ROLLBACK TRANSACTION
+        EXEC core.error
+        RETURN 55555
     END CATCH
 END
