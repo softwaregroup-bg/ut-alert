@@ -12,7 +12,7 @@
   "peerDependencies": {
     "ut-port-sql": "^7.0.0",
     "ut-dispatch-db": "^1.1.0",
-    "ut-run": "^9.8.0-rc-godfather.9"
+    "ut-run": "^10.0.0"
   },
   "devDependencies": {
     "ut-tools": "^6.4.2"
