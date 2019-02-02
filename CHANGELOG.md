@@ -1,3 +1,34 @@
+# [7.0.0](https://github.com/softwaregroup-bg/ut-alert/compare/v6.5.0...v7.0.0) (2019-02-02)
+
+
+### Bug Fixes
+
+* add ut-dispatch-db as peer dependency ([1e9fd08](https://github.com/softwaregroup-bg/ut-alert/commit/1e9fd08))
+* assets ([04d7c20](https://github.com/softwaregroup-bg/ut-alert/commit/04d7c20))
+* dependencies ([299e8f4](https://github.com/softwaregroup-bg/ut-alert/commit/299e8f4))
+* front end microservices ([67029fc](https://github.com/softwaregroup-bg/ut-alert/commit/67029fc))
+* move config ([b23c240](https://github.com/softwaregroup-bg/ut-alert/commit/b23c240))
+* refactor to remove ut-error ([e786ce9](https://github.com/softwaregroup-bg/ut-alert/commit/e786ce9))
+* seed ([795eb90](https://github.com/softwaregroup-bg/ut-alert/commit/795eb90))
+* typo ([5b727f5](https://github.com/softwaregroup-bg/ut-alert/commit/5b727f5))
+* typo ([1ea790e](https://github.com/softwaregroup-bg/ut-alert/commit/1ea790e))
+* upgrade dependencies ([2b08e09](https://github.com/softwaregroup-bg/ut-alert/commit/2b08e09))
+
+
+### Features
+
+* composable microservices ([ff57dd9](https://github.com/softwaregroup-bg/ut-alert/commit/ff57dd9))
+* export partial microservices ([92e6bce](https://github.com/softwaregroup-bg/ut-alert/commit/92e6bce))
+* refactor for xact_abort on ([c147045](https://github.com/softwaregroup-bg/ut-alert/commit/c147045))
+
+
+### BREAKING CHANGES
+
+* require upgrade of ut-run and ut-port
+* configuration moved to utAlert
+
+
+
 <a name="6.5.0"></a>
 # [6.5.0](https://github.com/softwaregroup-bg/ut-alert/compare/v6.5.0-rc-einstein.1...v6.5.0) (2018-08-02)
 
