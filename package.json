@@ -15,6 +15,7 @@
     "ut-run": "^10.0.0"
   },
   "devDependencies": {
+    "tap": "kalinkrustev/node-tap#2536cc04faf85f1a6117c0f619167c0d90de5e07",
     "ut-tools": "^6.8.10"
   },
   "dependencies": {
@@ -25,10 +26,10 @@
   },
   "scripts": {
     "lint": "ut-lint .",
-    "test": "ut-test",
+    "test": "ut-test-parallel",
     "changelog": "ut-changelog",
     "check": "ut-check",
-    "cover": "ut-cover",
+    "cover": "ut-cover-parallel",
     "lint-js": "ut-lint-js .",
     "postpublish": "ut-postpublish",
     "postversion": "ut-postversion",
