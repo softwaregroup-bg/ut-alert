@@ -1,6 +1,6 @@
 {
   "name": "ut-alert",
-  "version": "6.5.1-internet-banking.0",
+  "version": "6.5.1-internet-banking.1",
   "description": "",
   "main": "index.js",
   "pkg": {
