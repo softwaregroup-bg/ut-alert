@@ -1,3 +1,12 @@
+## [7.0.4](https://github.com/softwaregroup-bg/ut-alert/compare/v7.0.3...v7.0.4) (2019-03-28)
+
+
+### Bug Fixes
+
+* move seed config ([495e39c](https://github.com/softwaregroup-bg/ut-alert/commit/495e39c))
+
+
+
 ## [7.0.3](https://github.com/softwaregroup-bg/ut-alert/compare/v7.0.2...v7.0.3) (2019-03-22)
 
 
