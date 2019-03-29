@@ -1,6 +1,6 @@
 {
   "name": "ut-alert",
-  "version": "7.0.4",
+  "version": "7.0.5",
   "description": "",
   "main": "index.js",
   "browser": "browser.js",

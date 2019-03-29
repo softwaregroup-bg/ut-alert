@@ -1,3 +1,12 @@
+## [7.0.5](https://github.com/softwaregroup-bg/ut-alert/compare/v7.0.4...v7.0.5) (2019-03-29)
+
+
+### Bug Fixes
+
+* move seeds from impl-standard ([fafa090](https://github.com/softwaregroup-bg/ut-alert/commit/fafa090))
+
+
+
 ## [7.0.4](https://github.com/softwaregroup-bg/ut-alert/compare/v7.0.3...v7.0.4) (2019-03-28)
 
 
