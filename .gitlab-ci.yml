@@ -1,0 +1,5 @@
+test:
+    script:
+        - wget https://raw.githubusercontent.com/softwaregroup-bg/ut-tools/master/gitlab/gitlab-ci.sh -O gitlab-ci.sh
+        - chmod +x gitlab-ci.sh
+        - ./gitlab-ci.sh
