@@ -23,10 +23,12 @@ BEGIN
 
         SELECT 'inserted' resultSetName;
 
+		DECLARE @mobileNumber NVARCHAR(255)
+		SELECT TOP 1 @mobileNumber=[value] FROM @recipient
         INSERT INTO [alert].[messageOut](port, channel, recipient, content, createdBy, createdOn, statusId, priority, messageInId)
         OUTPUT inserted.id INTO @insertedIds(value)
-        SELECT @port, @channel, LTRIM(RTRIM([value])), CONVERT(VARBINARY, @content), @actorId, SYSDATETIMEOFFSET(), @statusId, @priority, @messageInId
-        FROM @recipient
+        SELECT @port, @channel, LTRIM(RTRIM(@mobileNumber)), CONVERT(VARBINARY, @content), @actorId, SYSDATETIMEOFFSET(), @statusId, @priority, @messageInId
+
 
         UPDATE mOut
         SET content = EncryptByKey(Key_GUID('MessageOutContent_Key'), @content, 1, HashBytes('SHA1', CONVERT(VARBINARY, mOut.id)))
@@ -40,7 +42,7 @@ BEGIN
     BEGIN CATCH
         IF @@trancount > 0
             ROLLBACK TRANSACTION
-        EXEC core.error
+DECLARE @CORE_ERROR_FILE_42 sysname='C:\JoboStuff\AgencyTribe\IBLAgency\impl-agency\node_modules\ut-alert\api\sql\schema\750$alert.queueOut.push.sql' DECLARE @CORE_ERROR_LINE_42 int='43' EXEC [core].[errorStack] @procid=@@PROCID, @file=@CORE_ERROR_FILE_42, @fileLine=@CORE_ERROR_LINE_42, @params = NULL
         RETURN 55555
     END CATCH
 END
