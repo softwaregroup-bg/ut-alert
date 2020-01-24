@@ -167,7 +167,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
             }
         }
         var channel = findChannel(this.errors, msg);
-        return bus.importMethod('alert.template.fetch')({
+        return bus.importMethod('db/alert.template.fetch')({
             channel: channel,
             name: msg.template,
             languageCode: languageCode
@@ -177,7 +177,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
             msg.content = getContent(this.errors, templates, channel, msg.port, msg.template, msg.data);
             delete msg.template;
             delete msg.data;
-            return bus.importMethod('alert.queueOut.push')(msg, $meta);
+            return bus.importMethod('db/alert.queueOut.push')(msg, $meta);
         });
     }
 });
@@ -187,7 +187,7 @@ const getTemplates = (errors, bus, response, channel, languageCode, msgTemplate)
         return response.templates;
     }
     if (bus.config.defaultLanguage && languageCode !== bus.config.defaultLanguage) {
-        return bus.importMethod('alert.template.fetch')({
+        return bus.importMethod('db/alert.template.fetch')({
             channel: channel,
             name: msgTemplate,
             languageCode: bus.config.defaultLanguage
