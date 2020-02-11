@@ -1,0 +1,4 @@
+category:
+  - name: general
+action:
+  - {category: general, action: 'alert.queueOut.push', description: 'alert.queueOut.push'}
