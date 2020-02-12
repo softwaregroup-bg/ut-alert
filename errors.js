@@ -1,6 +1,6 @@
 module.exports = function error({utError: {defineError, getError, fetchErrors}}) {
     if (!getError('alert')) {
-        let Alert = defineError('alert', undefined, 'ut-alert error');
+        const Alert = defineError('alert', undefined, 'ut-alert error');
         defineError('ambiguousResultForActorDevice', Alert, 'Zero or more than one device returned for an actorId & installationId!');
         defineError('channelNotFound', Alert, 'Missing utAlert.sql.ports.{port}.channel in the configuration');
         defineError('fieldMissing', Alert, 'Missing field');

@@ -46,16 +46,16 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
      * after the sending has finished and a response has been received by the provider.
      */
     'alert.push.notification.handleSuccess': function(msg, $meta) {
-        var { message, sendResponse } = msg; // message is the inserted row of alert.queueOut.push
-        var { actorId, installationId } = JSON.parse(message.recipient);
-        var updatePushNotificationToken = (updatedPushNotificationToken, actorId, installationId) => this.bus.importMethod('user.device.update')({
+        const { message, sendResponse } = msg; // message is the inserted row of alert.queueOut.push
+        const { actorId, installationId } = JSON.parse(message.recipient);
+        const updatePushNotificationToken = (updatedPushNotificationToken, actorId, installationId) => this.bus.importMethod('user.device.update')({
             actorDevice: {
                 actorId,
                 installationId,
                 pushNotificationToken: updatedPushNotificationToken
             }
         });
-        var notifySuccess = () => this.bus.importMethod('alert.queueOut.notifySuccess')({
+        const notifySuccess = () => this.bus.importMethod('alert.queueOut.notifySuccess')({
             messageId: message.id,
             refId: sendResponse.refId
         });
@@ -67,16 +67,16 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
         }
     },
     'alert.push.notification.handleFailure': function(msg, $meta) {
-        var { message, errorResponse } = msg; // message is the inserted row of alert.queueOut.push
-        var { actorId, installationId } = JSON.parse(message.recipient);
-        var removePushNotificationToken = (actorId, installationId) => this.bus.importMethod('user.device.update')({
+        const { message, errorResponse } = msg; // message is the inserted row of alert.queueOut.push
+        const { actorId, installationId } = JSON.parse(message.recipient);
+        const removePushNotificationToken = (actorId, installationId) => this.bus.importMethod('user.device.update')({
             actorDevice: {
                 actorId,
                 installationId,
                 pushNotificationToken: null
             }
         });
-        var notifyFailure = () => this.bus.importMethod('alert.queueOut.notifyFailure')({
+        const notifyFailure = () => this.bus.importMethod('alert.queueOut.notifyFailure')({
             messageId: message.id,
             errorMessage: (errorResponse && errorResponse.error && errorResponse.error.message) || 'Failed to send push notification.',
             errorCode: (errorResponse && errorResponse.error && errorResponse.error.code) || 'pushNotificationFailure'
@@ -101,12 +101,12 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
      * }
      */
     'alert.push.notification.send': function(msg, $meta) {
-        var actorId = msg.actorId;
-        var userDeviceGetParams = {
+        const actorId = msg.actorId;
+        const userDeviceGetParams = {
             actorId,
             installationId: msg.installationId ? msg.installationId : null
         };
-        var notification = {
+        const notification = {
             data: msg.data || {},
             template: msg.template,
             languageCode: msg.languageCode || null,
@@ -115,7 +115,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
             providerAlertMessageSends: [] // "alert.message.send" msg objects for each supported provider
         };
         // When the user.device.get procedure returns - append the devices array to the notification object.
-        var getDevices = (notification) => this.bus.importMethod('user.device.get')(userDeviceGetParams).then(response => {
+        const getDevices = (notification) => this.bus.importMethod('user.device.get')(userDeviceGetParams).then(response => {
             if (!notification.languageCode) {
                 notification.languageCode = response.user.languageCode;
             }
@@ -124,13 +124,13 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
             });
             return notification;
         });
-        var prepareAlertMessageSends = (notification) => {
+        const prepareAlertMessageSends = (notification) => {
             pushHelpers.distributeRecipients(notification, deviceOSToProvider);
             delete notification.devices;
             return notification;
         };
-        var prepareAlertMessageSendPromises = (notification) => {
-            var alertMessageSendPromises = [];
+        const prepareAlertMessageSendPromises = (notification) => {
+            const alertMessageSendPromises = [];
             notification.providerAlertMessageSends.forEach(alertMessageSend => {
                 if (notification.immediate) {
                     alertMessageSend.statusName = 'PROCESSING';
@@ -141,7 +141,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
             });
             return Promise.all(alertMessageSendPromises);
         };
-        var handleAlertMessageSendResponse = (response) => {
+        const handleAlertMessageSendResponse = (response) => {
             // This is the "default" behavior, the messages are queued and awaiting to be processed.
             if (!response.length) {
                 return response;
@@ -155,8 +155,8 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
             .then(handleAlertMessageSendResponse);
     },
     'alert.message.send': function(msg, $meta) {
-        var bus = this.bus;
-        var languageCode = msg.languageCode;
+        const bus = this.bus;
+        let languageCode = msg.languageCode;
         if (!languageCode) {
             languageCode = ($meta.language && $meta.language.iso2Code) || null;
             if (!languageCode) {
@@ -166,7 +166,7 @@ const methods = ({findChannel, deviceOSToProvider}) => ({
                 }
             }
         }
-        var channel = findChannel(this.errors, msg);
+        const channel = findChannel(this.errors, msg);
         return bus.importMethod('db/alert.template.fetch')({
             channel: channel,
             name: msg.template,
@@ -216,8 +216,8 @@ const getTemplates = (errors, bus, response, channel, languageCode, msgTemplate)
 };
 
 const getContent = (errors, templates, channel, port, msgTemplate, msgData) => {
-    var templateMap = {};
-    var content;
+    const templateMap = {};
+    let content;
     templates.forEach(template => {
         templateMap[template.type] = template;
     });
@@ -227,19 +227,19 @@ const getContent = (errors, templates, channel, port, msgTemplate, msgData) => {
     // TODO: Perhaps automate the properties generation with special "root" (for SMS channel) and then validate properties through alert.queueOut.push.
     // TODO: e.g. email: /subject = emailSubjectTemplate; email: /html = emailHtmlTemplate; sms: / = smsTemplate
     if (channel === 'sms') {
-        if (!templateMap.hasOwnProperty('smsTemplate')) {
+        if (!Object.prototype.hasOwnProperty.call(templateMap, 'smsTemplate')) {
             throw errors['alert.templateNotFound'](
                 {helperMessage: `Unable to find entry to itemName corresponding to itemType "smsTemplate" for template "${msgTemplate}"`}
             );
         }
         content = lodashTemplate(templateMap.smsTemplate.content)(msgData || {});
     } else if (channel === 'email') {
-        if (!templateMap.hasOwnProperty('emailSubjectTemplate')) {
+        if (!Object.prototype.hasOwnProperty.call(templateMap, 'emailSubjectTemplate')) {
             throw errors['alert.templateNotFound'](
                 {helperMessage: `Unable to find entry to itemName corresponding to itemType "emailSubjectTemplate" for template "${msgTemplate}"`}
             );
         }
-        if (!templateMap.hasOwnProperty('emailTextTemplate') && !templateMap.hasOwnProperty('emailHtmlTemplate')) {
+        if (!Object.prototype.hasOwnProperty.call(templateMap, 'emailTextTemplate') && !Object.prototype.hasOwnProperty.call(templateMap, 'emailHtmlTemplate')) {
             throw errors['alert.templateNotFound'](
                 {helperMessage: `Unable to find entry to itemName corresponding to itemType "emailTextTemplate" or "emailHtmlTemplate" for template "${msgTemplate}"`}
             );
@@ -247,18 +247,18 @@ const getContent = (errors, templates, channel, port, msgTemplate, msgData) => {
         content = {
             subject: lodashTemplate(templateMap.emailSubjectTemplate.content)(msgData || {})
         };
-        if (templateMap.hasOwnProperty('emailTextTemplate')) {
+        if (Object.prototype.hasOwnProperty.call(templateMap, 'emailTextTemplate')) {
             content.text = lodashTemplate(templateMap.emailTextTemplate.content)(msgData || {});
         }
-        if (templateMap.hasOwnProperty('emailHtmlTemplate')) {
+        if (Object.prototype.hasOwnProperty.call(templateMap, 'emailHtmlTemplate')) {
             content.html = lodashTemplate(templateMap.emailHtmlTemplate.content)(msgData || {});
         }
     } else if (channel === 'push') {
         const templateName = ['pushNotificationTemplate', port].join('.');
-        if (!templateMap.hasOwnProperty(templateName)) {
+        if (!Object.prototype.hasOwnProperty.call(templateMap, templateName)) {
             throw errors['alert.templateNotFound']({helperMessage: `Unable to find entry to push notification template ${msgTemplate} for provider ${port}`});
         }
-        content = lodashTemplate(templateMap[templateName]['content'])(msgData || {});
+        content = lodashTemplate(templateMap[templateName].content)(msgData || {});
     } else {
         throw errors['alert.templateNotFound']({helperMessage: `Channel "${channel}" is not supported, yet`});
     }
@@ -271,7 +271,7 @@ module.exports = function sql({config: {ports, deviceOSToProvider}} = {config: {
         findChannel: (errors, msg) => {
             if (!ports) throw errors['alert.portsNotFound']();
             if (!ports[msg.port]) throw errors['alert.portNotFound']({params: {port: msg.port}});
-            var channel = ports[msg.port].channel;
+            const channel = ports[msg.port].channel;
             if (!channel) throw errors['alert.channelNotFound']({params: {port: msg.port}});
             return channel;
         }

@@ -16,12 +16,12 @@
   },
   "devDependencies": {
     "tap": "^12.6.1",
-    "ut-tools": "^6.33.1"
+    "ut-tools": "^6.33.2"
   },
   "dependencies": {
     "joi": "13.7.0",
     "lodash.assign": "4.2.0",
-    "lodash.template": "4.4.0",
+    "lodash.template": "4.5.0",
     "when": "3.7.8"
   },
   "scripts": {

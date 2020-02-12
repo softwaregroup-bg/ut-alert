@@ -29,14 +29,14 @@ const buildCommonAlertMessageSendMsg = function(operatingSystem, notification, o
  * @param {Object} notification
  */
 const distributeRecipients = function(notification, osToProviderMap) {
-    var providerAlertMessageSends = {};
+    const providerAlertMessageSends = {};
     if (notification.devices.length) {
         notification.devices.forEach(device => {
             const deviceOS = device.deviceOS;
             if (!providerAlertMessageSends[deviceOS]) {
                 providerAlertMessageSends[deviceOS] = buildCommonAlertMessageSendMsg(deviceOS, notification, osToProviderMap);
             }
-            var providerAlertMessageSendMsg = providerAlertMessageSends[deviceOS];
+            const providerAlertMessageSendMsg = providerAlertMessageSends[deviceOS];
             const recipient = JSON.stringify({
                 actorId: device.actorId,
                 installationId: device.installationId
@@ -44,7 +44,7 @@ const distributeRecipients = function(notification, osToProviderMap) {
             providerAlertMessageSendMsg.recipient.push(recipient);
         });
     }
-    var providerKeys = Object.keys(providerAlertMessageSends);
+    const providerKeys = Object.keys(providerAlertMessageSends);
     providerKeys.forEach(providerKey => {
         notification.providerAlertMessageSends.push(providerAlertMessageSends[providerKey]);
     });
@@ -62,7 +62,7 @@ const distributeRecipients = function(notification, osToProviderMap) {
  * @param {Object} context - the Port (bus, config...)
  */
 const handleImmediatePushNotificationSend = function(response, port) {
-    var insertedRowsForImmediateProcessing = [];
+    const insertedRowsForImmediateProcessing = [];
     response.forEach(providerResponse => {
         const inserted = providerResponse.inserted; // inserted - this is the result of alert.message.send
         inserted.length && inserted.forEach(insertedRow => {
@@ -77,8 +77,8 @@ const handleImmediatePushNotificationSend = function(response, port) {
         return response;
     }
     // Initialize an array, that will containe send promises.
-    var getRecipientPushNotificationToken = (insertedRow) => {
-        var recipient = JSON.parse(insertedRow.recipient);
+    const getRecipientPushNotificationToken = (insertedRow) => {
+        const recipient = JSON.parse(insertedRow.recipient);
         return port.bus.importMethod('user.device.get')({
             actorId: recipient.actorId,
             installationId: recipient.installationId
@@ -89,31 +89,31 @@ const handleImmediatePushNotificationSend = function(response, port) {
             return userDeviceResult.device[0].pushNotificationToken;
         });
     };
-    var preparePushMessage = (insertedRow) => (pushNotificationToken) => {
+    const preparePushMessage = (insertedRow) => (pushNotificationToken) => {
         return {
             id: insertedRow.id,
             content: insertedRow.content,
             pushNotificationToken
         };
     };
-    var handleSuccess = (message) => (sendResponse) => {
+    const handleSuccess = (message) => (sendResponse) => {
         message.status = 'DELIVERED';
         return port.config['alert.push.notification.handleSuccess']({ message, sendResponse });
     };
-    var handleFailure = (message) => (errorResponse) => {
+    const handleFailure = (message) => (errorResponse) => {
         message.status = 'FAILED';
         return port.config['alert.push.notification.handleFailure']({ message, errorResponse });
     };
     // Define similar function for each provider.
-    var dispatchToFirebase = (fcmMessage) => port.bus.importMethod('firebase.fcm.send')(fcmMessage);
+    const dispatchToFirebase = (fcmMessage) => port.bus.importMethod('firebase.fcm.send')(fcmMessage);
     if (insertedRowsForImmediateProcessing.length) {
-        var sendNotificationPromises = [];
-        var dispatchToProvderPort = () => Promise.reject(port.errors['alert.providerNotImplemented']()); // Default - reject with no support.
+        const sendNotificationPromises = [];
+        let dispatchToProvderPort = () => Promise.reject(port.errors['alert.providerNotImplemented']()); // Default - reject with no support.
         insertedRowsForImmediateProcessing.forEach(insertedRow => {
             if (insertedRow.port === 'firebase') {
                 dispatchToProvderPort = dispatchToFirebase;
             }
-            var promise = getRecipientPushNotificationToken(insertedRow)
+            const promise = getRecipientPushNotificationToken(insertedRow)
                 .then(preparePushMessage(insertedRow))
                 .then(dispatchToProvderPort)
                 .then(handleSuccess(insertedRow))
