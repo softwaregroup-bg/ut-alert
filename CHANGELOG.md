@@ -1,3 +1,7 @@
+## [7.0.7](https://github.com/softwaregroup-bg/ut-alert/compare/v7.0.6...v7.0.7) (2020-02-12)
+
+
+
 ## [7.0.6](https://github.com/softwaregroup-bg/ut-alert/compare/v7.0.5...v7.0.6) (2020-01-24)
 
 
