@@ -1,7 +1,7 @@
 ALTER PROCEDURE [alert].[queueOut.push]
     @port VARCHAR(255),
     @channel VARCHAR(100),
-    @recipient [core].[arrayList] READONLY,
+    @recipient [core].[arrayBinaryList] READONLY,
     @content NVARCHAR(MAX),
     @priority SMALLINT = 0,
     @messageInId BIGINT = NULL,

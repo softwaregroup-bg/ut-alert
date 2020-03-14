@@ -6,7 +6,7 @@ BEGIN TRY
     DECLARE @statusQueued TINYINT = (SELECT id FROM [alert].[status] WHERE [name] = 'QUEUED')
     DECLARE @statusProcessing TINYINT = (SELECT id FROM [alert].[status] WHERE [name] = 'PROCESSING')
 
-    DECLARE @messageOut TABLE(id BIGINT, port VARCHAR(255), channel VARCHAR(100), recipient VARCHAR(255), content NVARCHAR(MAX))
+    DECLARE @messageOut TABLE(id BIGINT, port VARCHAR(255), channel VARCHAR(100), recipient VARBINARY(512), content NVARCHAR(MAX))
 
 
     SELECT 'messages' resultSetName;

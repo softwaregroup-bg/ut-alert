@@ -4,6 +4,7 @@ const pushHelpers = require('../../helpers/push');
 
 const methods = ({findChannel, deviceOSToProvider}) => ({
     schema: [{path: path.join(__dirname, '/schema'), linkSP: true}],
+    cbcStable: ['recipient'],
     start: function() {
         Object.assign(this.errors, this.errors.fetchErrors('alert'));
     },
