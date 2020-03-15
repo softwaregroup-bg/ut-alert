@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "tap": "^12.6.1",
-    "ut-tools": "^6.33.2"
+    "ut-tools": "^6.33.4"
   },
   "dependencies": {
     "joi": "13.7.0",
