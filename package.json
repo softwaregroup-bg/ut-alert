@@ -19,7 +19,7 @@
     "ut-tools": "^6.33.2"
   },
   "dependencies": {
-    "joi": "13.7.0",
+    "joi": "18.2.1",
     "lodash.assign": "4.2.0",
     "lodash.template": "4.5.0",
     "when": "3.7.8"
